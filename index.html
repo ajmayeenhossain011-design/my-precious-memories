@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MY PRECIOUS MEMORIES</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif}
+header{text-align:center;padding:25px;color:#d5b46b}
+h1{letter-spacing:3px;font-size:25px}
+.container{max-width:600px;margin:auto;padding:18px}
+.card{background:#151515;border:1px solid #a98a4d;border-radius:14px;padding:20px;margin:18px 0}
+input,button{width:100%;padding:13px;margin:8px 0;border-radius:8px;font-size:15px}
+input{background:#222;color:white;border:1px solid #555}
+button{background:#b49352;color:#080808;font-weight:bold;border:0}
+button.secondary{background:#292929;color:#d5b46b;border:1px solid #a98a4d}
+.small{font-size:13px;color:#aaa}
+#gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{background:#222;padding:8px;border-radius:10px;overflow:hidden}
+.item img,.item video{width:100%;height:150px;object-fit:cover;border-radius:7px}
+.item button{font-size:12px;padding:9px}
+.hidden{display:none}
+.gold{color:#d5b46b}
+</style>
+</head>
+<body>
+<header>
+<h1>MY PRECIOUS MEMORIES</h1>
+<p class="gold">Your Private World of Memories</p>
+</header>
+
+<div class="container">
+
+<div class="card" id="loginBox">
+<h2 class="gold">Welcome Back ❤️</h2>
+<input id="email" type="email" placeholder="Your Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<button class="secondary" onclick="signup()">CREATE ACCOUNT</button>
+<p class="small" id="message"></p>
+</div>
+
+<div id="app" class="hidden">
+<div class="card">
+<h2 class="gold">Your Memories</h2>
+<p>Welcome to your private gallery.</p>
+<input type="file" id="files" accept="image/*,video/*" multiple>
+<button onclick="uploadFiles()">UPLOAD MEMORIES</button>
+<p id="status" class="small"></p>
+</div>
+
+<div class="card">
+<h3 class="gold">Your Gallery</h3>
+<div id="gallery"></div>
+</div>
+
+<div class="card">
+<h3 class="gold">Website Statistics</h3>
+<p id="visits">Loading...</p>
+<button class="secondary" onclick="loadGallery()">REFRESH</button>
+<button onclick="logout()">LOCK & LOGOUT 🔒</button>
+</div>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL = "YOUR_PROJECT_URL";
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+const BUCKET = "PRECIOUS MEMORIES";
+
+const db = window.supabase.createClient(
+SUPABASE_URL,SUPABASE_KEY
+);
+
+let currentUser = null;
+
+function msg(t){
+document.getElementById("message").textContent=t;
+}
+
+async function signup(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+if(!email || password.length<6){
+msg("Enter email and password (minimum 6 characters).");
+return;
+}
+
+const {error}=await db.auth.signUp({email,password});
+msg(error ? error.message :
+"Account created. Check your email if verification is required.");
+}
+
+async function login(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+const {data,error}=await db.auth.signInWithPassword({
+email,password
+});
+
+if(error){msg(error.message);return;}
+
+currentUser=data.user;
+document.getElementById("loginBox").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+
+await recordVisit();
+await loadGallery();
+}
+
+async function recordVisit(){
+await db.from("site_visits").insert({
+user_id:currentUser.id,
+device_info:navigator.userAgent
+});
+
+const {count,error}=await db.from("site_visits")
+.select("*",{count:"exact",head:true})
+.eq("user_id",currentUser.id);
+
+document.getElementById("visits").textContent=
+error ? "Statistics unavailable" :
+"Your recorded visits: "+count;
+}
+
+async function uploadFiles(){
+const files=document.getElementById("files").files;
+const status=document.getElementById("status");
+
+if(!files.length){status.textContent="Select photos or videos first.";return;}
+
+for(const file of files){
+const safeName=Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+const path=currentUser.id+"/"+safeName;
+
+const {error}=await db.storage.from(BUCKET)
+.upload(path,file,{upsert:false});
+
+if(error){status.textContent=error.message;return;}
+}
+
+status.textContent="Upload completed!";
+document.getElementById("files").value="";
+await loadGallery();
+}
+
+async function loadGallery(){
+const gallery=document.getElementById("gallery");
+gallery.innerHTML="";
+
+const {data,error}=await db.storage.from(BUCKET)
+.list(currentUser.id,{limit:100});
+
+if(error){gallery.textContent=error.message;return;}
+
+for(const file of data){
+if(!file.name)continue;
+
+const path=currentUser.id+"/"+file.name;
+
+const {data:urlData,error:urlError}=await db.storage
+.from(BUCKET).createSignedUrl(path,60);
+
+if(urlError)continue;
+
+const url=urlData.signedUrl;
+const isVideo=/\.(mp4|mov|webm|m4v)$/i.test(file.name);
+
+const item=document.createElement("div");
+item.className="item";
+
+const media=document.createElement(isVideo?"video":"img");
+media.src=url;
+if(isVideo)media.controls=true;
+else media.loading="lazy";
+
+const download=document.createElement("button");
+download.textContent="DOWNLOAD";
+download.onclick=async()=>{
+const a=document.createElement("a");
+a.href=url;
+a.download=file.name;
+a.target="_blank";
+a.click();
+};
+
+const del=document.createElement("button");
+del.className="secondary";
+del.textContent="DELETE";
+del.onclick=async()=>{
+if(!confirm("Delete this memory?"))return;
+const {error}=await db.storage.from(BUCKET).remove([path]);
+if(error)alert(error.message);
+else loadGallery();
+};
+
+item.append(media,download,del);
+gallery.appendChild(item);
+}
+}
+
+async function logout(){
+await db.auth.signOut();
+currentUser=null;
+document.getElementById("app").classList.add("hidden");
+document.getElementById("loginBox").classList.remove("hidden");
+document.getElementById("gallery").innerHTML="";
+document.getElementById("password").value="";
+msg("Gallery locked.");
+}
+
+document.addEventListener("visibilitychange",()=>{
+if(document.hidden && currentUser)logout();
+});
+
+window.addEventListener("pagehide",()=>{
+if(currentUser)logout();
+});
+</script>
+</body>
+</html>
