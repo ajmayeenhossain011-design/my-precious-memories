@@ -3,289 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MY PRECIOUS MEMORIES</title>
-
+<title>Our Precious Memories ❤️</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
+:root {
+  --red:#c11235; --dark:#090708; --card:#1b1116;
+  --border:#672237; --text:#fff0f3; --muted:#c5aab2;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif}
-header{text-align:center;padding:25px;color:#d5b46b}
-h1{letter-spacing:3px;font-size:25px}
-.container{max-width:600px;margin:auto;padding:18px}
-.card{background:#151515;border:1px solid #a98a4d;border-radius:14px;padding:20px;margin:18px 0}
-input,button{width:100%;padding:13px;margin:8px 0;border-radius:8px;font-size:15px}
-input{background:#222;color:white;border:1px solid #555}
-button{background:#b49352;color:#080808;font-weight:bold;border:0;cursor:pointer}
-button.secondary{background:#292929;color:#d5b46b;border:1px solid #a98a4d}
-.small{font-size:13px;color:#aaa}
-#gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.item{background:#222;padding:8px;border-radius:10px;overflow:hidden}
-.item img,.item video{width:100%;height:150px;object-fit:cover;border-radius:7px}
-.item button{font-size:12px;padding:9px}
-.hidden{display:none}
-.gold{color:#d5b46b}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#390914,#13090d 48%,#080708);
+  color:var(--text);font-family:Georgia,serif;min-height:100vh
+}
+header{text-align:center;padding:32px 12px 25px;border-bottom:1px solid var(--border)}
+.heart{font-size:30px;color:#ff315b}
+h1{font-size:clamp(27px,6vw,43px);margin:8px 0;text-shadow:0 0 18px #b10e38}
+.subtitle{color:#d6aab5;font-style:italic}
+main{max-width:1100px;margin:auto;padding:22px 15px 50px}
+.panel{background:linear-gradient(145deg,#211218,#110c0f);border:1px solid var(--border);border-radius:16px;padding:19px;margin-bottom:22px}
+h2{color:#ff6684;margin-top:0}
+input,textarea,button{font:inherit}
+input[type=email],input[type=password],input[type=text],input[type=date],textarea{
+  display:block;width:100%;padding:13px;margin:10px 0;border-radius:9px;
+  border:1px solid #603040;background:#0d090b;color:white
+}
+input[type=file]{width:100%;margin:12px 0;color:#e8cbd3}
+textarea{resize:vertical;min-height:70px}
+button,.action{
+  border:0;border-radius:9px;background:linear-gradient(135deg,#b20e35,#71001d);
+  color:white;padding:11px 16px;cursor:pointer;text-decoration:none;display:inline-block
+}
+button:hover,.action:hover{filter:brightness(1.2)}
+button:disabled{opacity:.5}
+.secondary{background:#302027;border:1px solid #754052}
+#status,#loginStatus{color:#f2b4c3;white-space:pre-wrap}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:25px 0 15px}
+#albums,#gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+.album{
+  overflow:hidden;border:1px solid #672237;border-radius:13px;background:var(--card);
+  cursor:pointer;transition:.2s
+}
+.album:hover{transform:translateY(-3px);box-shadow:0 8px 22px #0008}
+.album-cover{width:100%;aspect-ratio:1.15;object-fit:cover;display:block;background:#211218}
+.album-info{padding:12px}
+.album-title{font-size:17px;color:#fff}
+.album-date{font-size:13px;color:#f18aa2;margin:6px 0}
+.album-count{font-size:12px;color:var(--muted)}
+.memory{position:relative;overflow:hidden;border-radius:12px;background:#1b1015;border:1px solid #612337;aspect-ratio:1}
+.memory img,.memory video{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+.empty{text-align:center;color:var(--muted);padding:35px 10px;grid-column:1/-1}
+.hidden{display:none!important}
+#viewer{
+ display:none;position:fixed;inset:0;z-index:10;background:#050304f5;
+ padding:55px 12px 20px;align-items:center;justify-content:center;flex-direction:column
+}
+#viewer.open{display:flex}
+#viewerContent{max-width:95vw;max-height:72vh;object-fit:contain;border-radius:9px}
+#viewerClose{position:absolute;top:12px;right:15px;font-size:25px;padding:5px 14px}
+.viewer-controls{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;justify-content:center}
+#viewerName{color:#e8c2cc;margin-top:10px;text-align:center;overflow-wrap:anywhere}
+footer{text-align:center;padding:20px;color:#9e7782;font-size:13px}
+@media(max-width:480px){#albums,#gallery{grid-template-columns:repeat(2,1fr);gap:9px}.panel{padding:15px}}
 </style>
 </head>
-
 <body>
 <header>
-<h1>MY PRECIOUS MEMORIES</h1>
-<p class="gold">Your Private World of Memories</p>
+  <div class="heart">♥</div>
+  <h1>Our Precious Memories</h1>
+  <div class="subtitle">Every moment with you is a beautiful memory</div>
 </header>
 
-<div class="container">
+<main>
+<section class="panel" id="loginPanel">
+  <h2>Welcome Back ❤️</h2>
+  <form id="loginForm">
+    <input id="email" type="email" placeholder="Email address" required>
+    <input id="password" type="password" placeholder="Password" required>
+    <button id="loginBtn" type="submit">Login</button>
+  </form>
+  <p id="loginStatus"></p>
+</section>
 
-<div class="card" id="loginBox">
-<h2 class="gold">Welcome Back ❤️</h2>
-<input id="email" type="email" placeholder="Your Email">
-<input id="password" type="password" placeholder="Password">
-<button id="loginButton">LOGIN</button>
-<p class="small" id="message"></p>
-</div>
+<section id="appPanel" class="hidden">
+  <section class="panel">
+    <h2>Create or Add to a Memory ❤️</h2>
+    <p style="color:#c5aab2">একটি তারিখে একটি অ্যালবাম থাকবে। একই তারিখ আবার নির্বাচন করলে নতুন অ্যালবাম হবে না—আগের অ্যালবামেই ছবি যোগ হবে।</p>
 
-<div id="app" class="hidden">
+    <label for="albumDate">Memory Date</label>
+    <input id="albumDate" type="date" required>
 
-<div class="card">
-<h2 class="gold">Your Memories</h2>
-<p>Welcome to your private gallery.</p>
-<input type="file" id="files" accept="image/*,video/*" multiple>
-<button id="uploadButton">UPLOAD MEMORIES</button>
-<p id="status" class="small"></p>
-</div>
+    <label for="albumTitle">Album Name</label>
+    <input id="albumTitle" type="text" maxlength="70" placeholder="e.g. Cox's Bazar Trip">
 
-<div class="card">
-<h3 class="gold">Your Gallery</h3>
-<div id="gallery"></div>
-</div>
+    <label for="albumDescription">Description (optional)</label>
+    <textarea id="albumDescription" maxlength="300" placeholder="Write something about this day..."></textarea>
 
-<div class="card">
-<h3 class="gold">Your Private Gallery</h3>
-<button class="secondary" id="refreshButton">REFRESH</button>
-<button id="logoutButton">LOCK & LOGOUT 🔒</button>
-</div>
+    <label for="fileInput">Choose Photos / Videos</label>
+    <input id="fileInput" type="file" accept="image/*,video/*" multiple>
 
+    <button id="uploadBtn">Save Memories ❤️</button>
+    <p id="status"></p>
+  </section>
+
+  <div class="toolbar">
+    <h2 style="margin:0">Our Memory Albums</h2>
+    <button class="secondary" id="refreshBtn">Refresh</button>
+  </div>
+  <div id="albums"><div class="empty">Loading albums...</div></div>
+
+  <section id="albumView" class="hidden">
+    <div class="toolbar">
+      <div>
+        <h2 id="viewTitle" style="margin:0 0 5px"></h2>
+        <div id="viewDate" style="color:#f18aa2"></div>
+      </div>
+      <button class="secondary" id="backBtn">← All Albums</button>
+    </div>
+    <p id="viewDescription" style="color:#c5aab2"></p>
+    <div id="gallery"></div>
+  </section>
+
+  <div style="text-align:right;margin-top:30px">
+    <button class="secondary" id="logoutBtn">Logout</button>
+  </div>
+</section>
+</main>
+
+<div id="viewer">
+  <button id="viewerClose">×</button>
+  <div id="viewerMedia"></div>
+  <div id="viewerName"></div>
+  <div class="viewer-controls">
+    <button class="secondary" id="prevBtn">❮ Previous</button>
+    <a id="downloadBtn" class="action" download>Download</a>
+    <button class="secondary" id="nextBtn">Next ❯</button>
+  </div>
 </div>
-</div>
+<footer>Made with ❤️ for our precious memories</footer>
 
 <script>
-const SUPABASE_URL = "https://jrvoblexequibhavjjpv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_-YVKtvimONR8A2Wt6YjQgw_jOurif6J";
-const BUCKET = "PRECIOUS MEMORIES";
+const SUPABASE_URL="https://jrvoblexequibhavjjpv.supabase.co";
+const SUPABASE_KEY="sb_publishable_-YVKtvimONR8A2Wt6YjQgw_jOurif6J";
+const BUCKET="PRECIOUS MEMORIES";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+let currentUser=null;
+let albums=[];
+let currentFiles=[];
+let viewerIndex=0;
 
-let currentUser = null;
-
-const $ = id => document.getElementById(id);
-
-function msg(text) {
-  $("message").textContent = text;
+function message(text){$("status").textContent=text}
+function videoFile(name){return /\.(mp4|webm|mov|m4v|ogg)$/i.test(name)}
+function niceDate(date){
+  const d=new Date(date+"T12:00:00");
+  return d.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+}
+function make(tag,cls,text){
+  const el=document.createElement(tag);
+  if(cls)el.className=cls;
+  if(text!==undefined)el.textContent=text;
+  return el;
+}
+function showApp(user){
+  currentUser=user;
+  $("loginPanel").classList.add("hidden");
+  $("appPanel").classList.remove("hidden");
+  $("albumDate").value=new Date().toLocaleDateString("en-CA");
+  loadAlbums();
 }
 
-function showLogin() {
-  $("loginBox").classList.remove("hidden");
-  $("app").classList.add("hidden");
-}
-
-function showApp() {
-  $("loginBox").classList.add("hidden");
-  $("app").classList.remove("hidden");
-}
-
-async function login() {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    msg("Enter your email and password.");
-    return;
-  }
-
-  $("loginButton").disabled = true;
-  msg("Logging in...");
-
-  const {data, error} = await db.auth.signInWithPassword({
-    email,
-    password
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  $("loginBtn").disabled=true;
+  $("loginStatus").textContent="Logging in...";
+  const {data,error}=await db.auth.signInWithPassword({
+    email:$("email").value.trim(),password:$("password").value
   });
-
-  $("loginButton").disabled = false;
-
-  if (error) {
-    msg(error.message);
-    return;
-  }
-
-  currentUser = data.user;
-  showApp();
-  await loadGallery();
-}
-
-async function uploadFiles() {
-  const files = $("files").files;
-  const status = $("status");
-
-  if (!currentUser) {
-    status.textContent = "Please login first.";
-    return;
-  }
-
-  if (!files.length) {
-    status.textContent = "Select photos or videos first.";
-    return;
-  }
-
-  status.textContent = "Uploading...";
-
-  for (const file of files) {
-    const safeName =
-      Date.now() + "-" +
-      file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-
-    const path = currentUser.id + "/" + safeName;
-
-    const {error} = await db.storage
-      .from(BUCKET)
-      .upload(path, file, {upsert: false});
-
-    if (error) {
-      status.textContent = "Upload failed: " + error.message;
-      return;
-    }
-  }
-
-  status.textContent = "Upload completed!";
-  $("files").value = "";
-  await loadGallery();
-}
-
-async function loadGallery() {
-  const gallery = $("gallery");
-  gallery.innerHTML = "Loading memories...";
-
-  if (!currentUser) {
-    gallery.innerHTML = "";
-    return;
-  }
-
-  const {data, error} = await db.storage
-    .from(BUCKET)
-    .list(currentUser.id, {limit: 100});
-
-  if (error) {
-    gallery.textContent = "Gallery error: " + error.message;
-    return;
-  }
-
-  gallery.innerHTML = "";
-
-  const files = (data || []).filter(file => file.name);
-
-  if (!files.length) {
-    gallery.textContent = "No memories uploaded yet.";
-    return;
-  }
-
-  for (const file of files) {
-    const path = currentUser.id + "/" + file.name;
-
-    const {data: urlData, error: urlError} =
-      await db.storage.from(BUCKET).createSignedUrl(path, 300);
-
-    if (urlError) continue;
-
-    const url = urlData.signedUrl;
-    const isVideo = /\.(mp4|mov|webm|m4v)$/i.test(file.name);
-
-    const item = document.createElement("div");
-    item.className = "item";
-
-    const media = document.createElement(isVideo ? "video" : "img");
-    media.src = url;
-
-    if (isVideo) {
-      media.controls = true;
-      media.preload = "metadata";
-    } else {
-      media.loading = "lazy";
-    }
-
-    const download = document.createElement("button");
-    download.textContent = "DOWNLOAD";
-    download.onclick = () => {
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = file.name;
-      a.target = "_blank";
-      a.click();
-    };
-
-    const del = document.createElement("button");
-    del.className = "secondary";
-    del.textContent = "DELETE";
-
-    del.onclick = async () => {
-      if (!confirm("Delete this memory?")) return;
-
-      const {error: deleteError} = await db.storage
-        .from(BUCKET)
-        .remove([path]);
-
-      if (deleteError) {
-        alert(deleteError.message);
-      } else {
-        await loadGallery();
-      }
-    };
-
-    item.append(media, download, del);
-    gallery.appendChild(item);
-  }
-}
-
-async function logout() {
-  await db.auth.signOut();
-  currentUser = null;
-  $("password").value = "";
-  $("gallery").innerHTML = "";
-  showLogin();
-  msg("Gallery locked.");
-}
-
-$("loginButton").addEventListener("click", login);
-$("uploadButton").addEventListener("click", uploadFiles);
-$("refreshButton").addEventListener("click", loadGallery);
-$("logoutButton").addEventListener("click", logout);
-
-async function initialize() {
-  const {data, error} = await db.auth.getSession();
-
-  if (error) {
-    msg(error.message);
-    return;
-  }
-
-  if (data.session) {
-    currentUser = data.session.user;
-    showApp();
-    await loadGallery();
-  } else {
-    showLogin();
-  }
-}
-
-db.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT") {
-    currentUser = null;
-    showLogin();
-  }
+  $("loginBtn").disabled=false;
+  if(error){$("loginStatus").textContent=error.message;return}
+  $("loginStatus").textContent="";
+  showApp(data.user);
 });
 
-initialize();
+async function signedUrl(path){
+  const {data,error}=await db.storage.from(BUCKET).createSignedUrl(path,3600);
+  return error?null:data.signedUrl;
+}
+
+async function loadAlbums(){
+  $("albums").innerHTML="";
+  $("albums").append(make("div","empty","Loading albums..."));
+  $("albumView").classList.add("hidden");
+  $("albums").classList.remove("hidden");
+
+  const {data,error}=await db.storage.from(BUCKET).list(currentUser.id,{
+    limit:300,sortBy:{column:"name",order:"desc"}
+  });
+  if(error){$("albums").innerHTML="";$("albums").append(make("div","empty",error.message));return}
+
+  const folders=(data||[]).filter(x=>!x.id && /^\d{4}-\d{2}-\d{2}$/.test(x.name));
+  albums=[];
+
+  for(const folder of folders){
+    const folderPath=`${currentUser.id}/${folder.name}`;
+    const {data:items,error:itemError}=await db.storage.from(BUCKET).list(folderPath,{
+      limit:300,sortBy:{column:"created_at",order:"asc"}
+    });
+    if(itemError)continue;
+
+    const files=(items||[]).filter(x=>x.name && x.name!=="album.json");
+    if(!files.length)continue;
+
+    let meta={title:niceDate(folder.name),description:""};
+    const hasMeta=(items||[]).some(x=>x.name==="album.json");
+    if(hasMeta){
+      const url=await signedUrl(`${folderPath}/album.json`);
+      if(url){
+        try{
+          const response=await fetch(url);
+          if(response.ok)meta={...meta,...await response.json()};
+        }catch(e){}
+      }
+    }
+
+    let cover=null;
+    for(const file of files){
+      if(/\.(jpg|jpeg|png|gif|webp|bmp|avif|mp4|webm|mov|m4v)$/i.test(file.name)){
+        cover=await signedUrl(`${folderPath}/${file.name}`);
+        if(cover)break;
+      }
+    }
+
+    albums.push({
+      date:folder.name,path:folderPath,
+      title:meta.title||niceDate(folder.name),
+      description:meta.description||"",
+      count:files.length,
+      videos:files.filter(x=>videoFile(x.name)).length,
+      cover
+    });
+  }
+  albums.sort((a,b)=>b.date.localeCompare(a.date));
+  renderAlbums();
+}
+
+function renderAlbums(){
+  $("albums").innerHTML="";
+  if(!albums.length){
+    $("albums").append(make("div","empty","No albums yet. Create your first memory ❤️"));
+    return;
+  }
+
+  albums.forEach(album=>{
+    const card=make("div","album");
+    if(album.cover){
+      const img=make("img","album-cover");
+      img.src=album.cover;img.alt=album.title;
+      card.append(img);
+    }else{
+      card.append(make("div","album-cover","❤️"));
+    }
+    const info=make("div","album-info");
+    info.append(make("div","album-title",album.title));
+    info.append(make("div","album-date",niceDate(album.date)));
+    info.append(make("div","album-count",
+      `${album.count-album.videos} Photos · ${album.videos} Videos`));
+    card.append(info);
+    card.onclick=()=>openAlbum(album);
+    $("albums").append(card);
+  });
+}
+
+async function openAlbum(album){
+  $("albums").classList.add("hidden");
+  $("albumView").classList.remove("hidden");
+  $("viewTitle").textContent=album.title;
+  $("viewDate").textContent=niceDate(album.date);
+  $("viewDescription").textContent=album.description;
+  $("gallery").innerHTML='<div class="empty">Loading memories...</div>';
+
+  const {data,error}=await db.storage.from(BUCKET).list(album.path,{
+    limit:300,sortBy:{column:"created_at",order:"asc"}
+  });
+  if(error){$("gallery").textContent=error.message;return}
+
+  const files=(data||[]).filter(f=>f.name && f.name!=="album.json");
+  currentFiles=[];
+  for(const file of files){
+    const path=`${album.path}/${file.name}`;
+    const url=await signedUrl(path);
+    if(url)currentFiles.push({name:file.name,path,url});
+  }
+  renderFiles();
+}
+
+function renderFiles(){
+  $("gallery").innerHTML="";
+  if(!currentFiles.length){
+    $("gallery").append(make("div","empty","No photos or videos in this album yet."));
+    return;
+  }
+  currentFiles.forEach((file,index)=>{
+    const card=make("div","memory");
+    const media=make(videoFile(file.name)?"video":"img");
+    media.src=file.url;
+    if(media.tagName==="VIDEO"){media.muted=true;media.playsInline=true}
+    else media.alt=file.name;
+    card.append(media);
+    card.onclick=()=>openViewer(index);
+    $("gallery").append(card);
+  });
+}
+
+function openViewer(index){
+  if(!currentFiles.length)return;
+  viewerIndex=(index+currentFiles.length)%currentFiles.length;
+  const file=currentFiles[viewerIndex];
+  $("viewerMedia").innerHTML="";
+  const media=make(videoFile(file.name)?"video":"img");
+  media.id="viewerContent";
+  media.src=file.url;
+  if(media.tagName==="VIDEO"){media.controls=true;media.autoplay=true;media.playsInline=true}
+  else media.alt=file.name;
+  $("viewerMedia").append(media);
+  $("viewerName").textContent=file.name;
+  $("downloadBtn").href=file.url;
+  $("downloadBtn").download=file.name;
+  $("viewer").classList.add("open");
+}
+function closeViewer(){
+  const v=$("viewerMedia").querySelector("video");
+  if(v)v.pause();
+  $("viewer").classList.remove("open");
+  $("viewerMedia").innerHTML="";
+}
+
+$("viewerClose").onclick=closeViewer;
+$("prevBtn").onclick=()=>openViewer(viewerIndex-1);
+$("nextBtn").onclick=()=>openViewer(viewerIndex+1);
+$("viewer").onclick=e=>{if(e.target===$("viewer"))closeViewer()};
+$("backBtn").onclick=loadAlbums;
+$("refreshBtn").onclick=loadAlbums;
+
+document.addEventListener("keydown",e=>{
+  if(!$("viewer").classList.contains("open"))return;
+  if(e.key==="Escape")closeViewer();
+  if(e.key==="ArrowLeft")openViewer(viewerIndex-1);
+  if(e.key==="ArrowRight")openViewer(viewerIndex+1);
+});
+
+$("uploadBtn").onclick=async()=>{
+  const date=$("albumDate").value;
+  const title=$("albumTitle").value.trim();
+  const description=$("albumDescription").value.trim();
+  const selected=$("fileInput").files;
+
+  if(!date){message("Please choose a memory date.");return}
+  if(!title){message("Please enter an album name.");return}
+  if(!selected.length){message("Please choose at least one photo or video.");return}
+
+  $("uploadBtn").disabled=true;
+  const folder=`${currentUser.id}/${date}`;
+
+  message("Checking this date's album...");
+  const {data:existing,error:listError}=await db.storage.from(BUCKET).list(folder,{
+    limit:300
+  });
+  if(listError){
+    message("Could not check album: "+listError.message);
+    $("uploadBtn").disabled=false;return;
+  }
+
+  const metadataExists=(existing||[]).some(x=>x.name==="album.json");
+  if(!metadataExists){
+    const metadata=new Blob([JSON.stringify({title,description})],{type:"application/json"});
+    const {error:metaError}=await db.storage.from(BUCKET).upload(
+      `${folder}/album.json`,metadata,{contentType:"application/json",upsert:false}
+    );
+    if(metaError){
+      message("Album could not be created: "+metaError.message);
+      $("uploadBtn").disabled=false;return;
+    }
+  }else{
+    message("This date's album already exists. Adding to the same album...");
+  }
+
+  for(let i=0;i<selected.length;i++){
+    const file=selected[i];
+    const clean=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+    const unique=`${Date.now()}_${i}_${Math.random().toString(36).slice(2,8)}_${clean}`;
+    message(`Uploading ${i+1} of ${selected.length}: ${file.name}`);
+
+    const {error}=await db.storage.from(BUCKET).upload(
+      `${folder}/${unique}`,file,{
+        cacheControl:"3600",upsert:false,
+        contentType:file.type||"application/octet-stream"
+      }
+    );
+    if(error){
+      message("Upload failed: "+error.message);
+      $("uploadBtn").disabled=false;return;
+    }
+  }
+
+  $("fileInput").value="";
+  $("uploadBtn").disabled=false;
+  message("Memories saved successfully ❤️");
+  await loadAlbums();
+};
+
+$("logoutBtn").onclick=async()=>{
+  await db.auth.signOut();
+  currentUser=null;albums=[];currentFiles=[];
+  closeViewer();
+  $("appPanel").classList.add("hidden");
+  $("loginPanel").classList.remove("hidden");
+  $("loginStatus").textContent="";
+};
+
+(async()=>{
+  const {data,error}=await db.auth.getSession();
+  if(!error && data.session)showApp(data.session.user);
+})();
 </script>
 </body>
 </html>
