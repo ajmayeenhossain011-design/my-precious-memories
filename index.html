@@ -94,7 +94,6 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .album-date{font-size:13px;color:#f18aa5;margin:9px 0}
 .album-count{font-size:12px;color:#c5aab5;letter-spacing:.3px}
 .memory{
-  content-visibility:auto;contain-intrinsic-size:220px;
   position:relative;overflow:hidden;border-radius:16px;background:#1b1015;
   border:1px solid #612337;aspect-ratio:1;box-shadow:0 8px 23px #0007;
   transition:transform .28s,border-color .28s,box-shadow .28s;
@@ -161,24 +160,104 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 
-/* PREMIUM GLASS + CINEMATIC VIEWER */
-.panel{background:linear-gradient(135deg,rgba(91,28,54,.43),rgba(20,10,17,.56));border:1px solid rgba(255,210,225,.20);backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);box-shadow:0 20px 55px #0008,inset 0 1px rgba(255,255,255,.10)}
-.album{background:linear-gradient(145deg,rgba(111,35,66,.42),rgba(17,9,15,.55));backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-color:rgba(255,180,205,.22)}
-.memory{background:rgba(28,12,21,.42);border-color:rgba(255,190,211,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-input,textarea{background:rgba(8,5,9,.52);border-color:rgba(255,178,204,.27);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.secondary{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.045));border-color:rgba(255,220,232,.25);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-#viewer{padding:76px 18px 28px;background:rgba(3,2,5,.88);backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%)}
-#viewerMedia{position:relative;width:min(94vw,1500px);height:min(74vh,900px);max-width:100%;max-height:none;min-height:180px;overflow:hidden;border:1px solid rgba(255,220,235,.17);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 25px 90px #000b,inset 0 1px #ffffff18;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-#viewerContent{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 12px 45px #0009;transition:transform .28s ease;touch-action:pan-y}
-#viewerContent.zoomed{max-width:none;max-height:none;transform:scale(2);cursor:zoom-out}
-#viewerContent:not(.zoomed){cursor:zoom-in}
-#viewerName{padding:9px 16px;border:1px solid rgba(255,210,225,.15);border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.viewer-top{position:absolute;top:14px;left:18px;right:76px;color:#f7dce5;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;opacity:.8}
-#viewerClose{top:13px;right:15px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.viewer-controls{padding:10px 13px;border:1px solid rgba(255,220,235,.16);border-radius:18px;background:rgba(25,12,20,.48);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 40px #0006}
-.memory img,.memory video{transition:transform .45s ease,filter .35s ease}
-.memory:hover img,.memory:hover video{transform:scale(1.055);filter:saturate(1.08)}
-@media(max-width:600px){#viewer{padding:62px 8px 16px}#viewerMedia{width:96vw;height:68vh;min-height:220px;border-radius:15px}#viewerContent{max-width:100%;max-height:100%}#viewerContent.zoomed{transform:scale(1.65)}.viewer-controls{width:96vw;gap:6px;padding:8px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.viewer-controls button,.viewer-controls .action{min-width:0;padding:10px 4px;font-size:12px}}
+/* LUXURY BLACK & GOLD THEME */
+:root{
+  --red:#c7a45c;--red2:#80612c;--dark:#050505;--panel:#11100d;
+  --card:#15130f;--border:#806a3e;--text:#f7f1e5;--muted:#b9ad96;
+  --gold:#d8b86a;
+}
+body{
+  color:#f7f1e5;
+  background:
+    radial-gradient(ellipse at 50% -12%,rgba(154,119,48,.22),transparent 44%),
+    radial-gradient(ellipse at 0% 75%,rgba(112,83,34,.12),transparent 38%),
+    radial-gradient(ellipse at 100% 90%,rgba(112,83,34,.10),transparent 38%),
+    #050505;
+  font-family: "Palatino Linotype",Palatino,Georgia,serif;
+}
+header{
+  border-bottom:1px solid rgba(216,184,106,.34);
+  background:linear-gradient(180deg,rgba(40,33,19,.92),rgba(12,11,9,.78) 72%,transparent);
+  box-shadow:0 18px 60px #000b;
+}
+.heart{color:#e0c47b;text-shadow:0 0 12px #c8a65b88,0 0 34px #c8a65b55}
+h1{color:#f3e4bd;text-shadow:0 4px 30px #c6a45a33;letter-spacing:1.6px}
+.subtitle{color:#c7b88f}
+.panel{
+  background:linear-gradient(145deg,rgba(37,32,22,.82),rgba(13,13,11,.88) 58%,rgba(8,8,7,.92));
+  border:1px solid rgba(216,184,106,.27);
+  border-radius:24px;
+  box-shadow:0 22px 60px #000a,inset 0 1px rgba(255,235,190,.10);
+  backdrop-filter:blur(24px) saturate(130%);
+  -webkit-backdrop-filter:blur(24px) saturate(130%);
+}
+.panel::before{background:linear-gradient(90deg,transparent,#e2c77b99,transparent)}
+h2{color:#e4c77f;letter-spacing:.7px}
+label{color:#d6c49a}
+input,textarea{
+  color:#fff8e8;background:rgba(5,5,4,.72);
+  border:1px solid rgba(216,184,106,.32);border-radius:13px;
+}
+input:focus,textarea:focus{border-color:#dfc16e;box-shadow:0 0 0 3px #d7b65a22,0 0 24px #d7b65a18}
+button,.action{
+  color:#17130a;font-weight:700;
+  border:1px solid #e2c77d;
+  background:linear-gradient(135deg,#f0d995,#b18a3e 58%,#80602a);
+  box-shadow:0 8px 25px #b38b3c33,inset 0 1px #fff8dc99;
+}
+button:hover,.action:hover{box-shadow:0 12px 32px #c7a45c55;filter:brightness(1.08)}
+.secondary{
+  color:#f0dfb4;background:linear-gradient(135deg,rgba(198,164,89,.18),rgba(255,255,255,.035));
+  border-color:rgba(216,184,106,.38);box-shadow:inset 0 1px #ffffff12;
+}
+#status,#loginStatus{color:#e5cd91}
+.album{
+  border:1px solid rgba(216,184,106,.28);
+  background:linear-gradient(145deg,rgba(39,34,23,.88),rgba(9,9,8,.94));
+  box-shadow:0 14px 38px #0009;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.album:hover{border-color:#e1c477;box-shadow:0 18px 42px #b18a3e2e}
+.album-cover{background:linear-gradient(135deg,#4b3b1d,#0c0b08)}
+.album-title{color:#f6e9c9}
+.album-date{color:#d2b66e}
+.album-count,.empty{color:#b9ad96}
+.memory{
+  border:1px solid rgba(216,184,106,.25);
+  background:rgba(18,16,11,.72);
+  box-shadow:0 10px 28px #0009;
+}
+.memory:hover{border-color:#dfc16e;box-shadow:0 15px 34px #b18a3e33}
+#viewer{
+  background:rgba(3,3,2,.94);
+  backdrop-filter:blur(26px) saturate(120%);
+  -webkit-backdrop-filter:blur(26px) saturate(120%);
+}
+#viewer::before{opacity:.26;background:radial-gradient(ellipse at center,rgba(178,139,58,.30),transparent 68%)}
+#viewerMedia{
+  border:1px solid rgba(226,199,125,.28);
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(216,184,106,.08),rgba(255,255,255,.015));
+  box-shadow:0 28px 100px #000d,inset 0 1px #fff2;
+}
+#viewerName{
+  color:#ead7a7;border-color:rgba(216,184,106,.25);
+  background:rgba(35,29,17,.55);
+}
+.viewer-controls{
+  border-color:rgba(216,184,106,.25);
+  background:rgba(20,17,11,.70);
+  box-shadow:0 14px 42px #0009;
+}
+#viewerClose{color:#f3e3bd;border-color:rgba(226,199,125,.42)}
+#viewerHint{color:#b8a77f}
+footer{color:#9f916f}
+@media(max-width:600px){
+  header{padding:42px 14px 32px}
+  .panel{border-radius:19px}
+  .album{border-radius:16px}
+  .memory{border-radius:14px}
+}
 
 </style>
 </head>
@@ -236,18 +315,16 @@ input,textarea{background:rgba(8,5,9,.52);border-color:rgba(255,178,204,.27);bac
 </section>
 </main>
 
-<div id="viewer" aria-label="Cinematic photo and video viewer">
-  <div class="viewer-top">PRECIOUS MEMORIES · CINEMATIC VIEW</div>
+<div id="viewer" aria-label="Photo viewer">
   <button id="viewerClose" aria-label="Close viewer">×</button>
-  <div id="viewerMedia"></div><div id="viewerName"></div>
+  <div id="viewerMedia"></div>
+  <div id="viewerName"></div>
   <div class="viewer-controls">
-    <button class="secondary" id="prevBtn">❮ Prev</button>
-    <button class="secondary" id="zoomBtn">⌕ Zoom</button>
-    <a id="downloadBtn" class="action" download>↓ Save</a>
-    <button class="secondary" id="fullBtn">⛶ Full</button>
+    <button class="secondary" id="prevBtn">❮ Previous</button>
+    <a id="downloadBtn" class="action" download>Download</a>
     <button class="secondary" id="nextBtn">Next ❯</button>
   </div>
-  <div id="viewerHint">SWIPE OR USE ← → · ESC TO CLOSE · TAP PHOTO TO ZOOM</div>
+  <div id="viewerHint">← → TO NAVIGATE · ESC TO CLOSE · TAP PHOTO TO ZOOM</div>
 </div>
 
 <footer>Made with ❤️ for our precious memories</footer>
@@ -338,20 +415,19 @@ async function signedUrl(path){
 /* LOAD ALBUMS */
 async function loadAlbums(){
   if(!currentUser)return;
-  $("albums").innerHTML="";$("albums").append(make("div","empty","Loading albums..."));
+  $("albums").innerHTML="";$("albums").append(make("div","empty","Loading your memories..."));
   $("albumView").classList.add("hidden");$("albums").classList.remove("hidden");
   const {data,error}=await db.storage.from(BUCKET).list(currentUser.id,{limit:300,sortBy:{column:"name",order:"desc"}});
   if(error){$("albums").innerHTML="";$("albums").append(make("div","empty",error.message));return}
   const folders=(data||[]).filter(x=>!x.id&&/^\d{4}-\d{2}-\d{2}$/.test(x.name));
-  // List every date folder together instead of waiting for each network request in sequence.
-  const results=await Promise.all(folders.map(async folder=>{
+  const loaded=await Promise.all(folders.map(async folder=>{
     const folderPath=`${currentUser.id}/${folder.name}`;
     const {data:items,error:itemError}=await db.storage.from(BUCKET).list(folderPath,{limit:300,sortBy:{column:"created_at",order:"asc"}});
     if(itemError)return null;
     const files=(items||[]).filter(x=>x.name&&x.name!=="album.json");
     if(!files.length)return null;
-    const metaFile=(items||[]).some(x=>x.name==="album.json");
-    const coverFile=files.find(x=>/\.(jpg|jpeg|png|webp|avif)$/i.test(x.name));
+    const metaFile=files.length>=0&&(items||[]).some(x=>x.name==="album.json");
+    const coverFile=files.find(file=>/\.(jpg|jpeg|png|gif|webp|bmp|avif|mp4|webm|mov|m4v)$/i.test(file.name));
     const [metaUrl,cover]=await Promise.all([
       metaFile?signedUrl(`${folderPath}/album.json`):Promise.resolve(null),
       coverFile?signedUrl(`${folderPath}/${coverFile.name}`):Promise.resolve(null)
@@ -360,7 +436,8 @@ async function loadAlbums(){
     if(metaUrl){try{const response=await fetch(metaUrl);if(response.ok)meta={...meta,...await response.json()}}catch(e){}}
     return {date:folder.name,path:folderPath,title:meta.title||niceDate(folder.name),description:meta.description||"",count:files.length,videos:files.filter(x=>videoFile(x.name)).length,cover};
   }));
-  albums=results.filter(Boolean).sort((a,b)=>b.date.localeCompare(a.date));renderAlbums();
+  albums=loaded.filter(Boolean).sort((a,b)=>b.date.localeCompare(a.date));
+  renderAlbums();
 }
 
 /* RENDER ALBUMS */
@@ -384,13 +461,13 @@ async function openAlbum(album){
   $("albums").classList.add("hidden");$("albumView").classList.remove("hidden");
   $("viewTitle").textContent=album.title;$("viewDate").textContent=niceDate(album.date);
   $("viewDescription").textContent=album.description;$("gallery").innerHTML="";
-  $("gallery").append(make("div","empty","Loading memories..."));
+  $("gallery").append(make("div","empty","Preparing your memories..."));
   const {data,error}=await db.storage.from(BUCKET).list(album.path,{limit:300,sortBy:{column:"created_at",order:"asc"}});
   if(error){$("gallery").textContent=error.message;return}
   const files=(data||[]).filter(f=>f.name&&f.name!=="album.json");
-  // Create signed URLs concurrently to avoid one-by-one loading delays.
-  const signed=await Promise.all(files.map(async file=>({name:file.name,path:`${album.path}/${file.name}`,url:await signedUrl(`${album.path}/${file.name}`)})));
-  currentFiles=signed.filter(file=>file.url);renderFiles();
+  const urls=await Promise.all(files.map(file=>signedUrl(`${album.path}/${file.name}`)));
+  currentFiles=files.map((file,index)=>urls[index]?{name:file.name,path:`${album.path}/${file.name}`,url:urls[index]}:null).filter(Boolean);
+  renderFiles();
 }
 
 /* RENDER PHOTOS AND VIDEOS */
@@ -399,11 +476,9 @@ function renderFiles(){
   if(!currentFiles.length){$("gallery").append(make("div","empty","No photos or videos in this album yet."));return}
   currentFiles.forEach((file,index)=>{
     const card=make("div","memory"),media=make(videoFile(file.name)?"video":"img");
-    if(media.tagName==="VIDEO"){
-      media.muted=true;media.playsInline=true;media.preload="none";
-      media.setAttribute("aria-label",`Play ${file.name}`);
-      media.poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23210d18'/%3E%3Ccircle cx='200' cy='200' r='48' fill='%23ed285b'/%3E%3Cpath d='M185 170v60l50-30z' fill='white'/%3E%3C/svg%3E";
-    }else{media.src=file.url;media.alt=file.name;media.loading="lazy";media.decoding="async"}
+    media.src=file.url;
+    if(media.tagName==="VIDEO"){media.muted=true;media.playsInline=true;media.preload="none"}
+    else{media.alt=file.name;media.loading="lazy";media.decoding="async"}
     card.append(media);card.onclick=()=>openViewer(index);$("gallery").append(card);
   });
 }
@@ -412,14 +487,16 @@ function renderFiles(){
 function openViewer(index){
   if(!currentFiles.length)return;
   viewerIndex=(index+currentFiles.length)%currentFiles.length;
-  const file=currentFiles[viewerIndex];$('viewerMedia').innerHTML='';
-  const media=make(videoFile(file.name)?'video':'img');media.id='viewerContent';media.src=file.url;
-  if(media.tagName==='VIDEO'){media.controls=true;media.autoplay=true;media.playsInline=true;media.preload='metadata'}
-  else{media.alt=file.name;media.decoding='async';media.addEventListener('click',()=>media.classList.toggle('zoomed'))}
-  $('viewerMedia').append(media);$('viewerName').textContent=file.name;
-  $('downloadBtn').href=file.url;$('downloadBtn').download=file.name;
-  $('zoomBtn').classList.toggle('hidden',media.tagName==='VIDEO');
-  $('viewer').classList.add('open');
+  const file=currentFiles[viewerIndex];$("viewerMedia").innerHTML="";
+  const media=make(videoFile(file.name)?"video":"img");media.id="viewerContent";media.src=file.url;media.onerror=()=>{$("viewerHint").textContent="Could not load this item. Check your connection and try again.";};
+  if(media.tagName==="VIDEO"){media.controls=true;media.autoplay=true;media.playsInline=true}
+  else{
+    media.alt=file.name;
+    media.addEventListener("click",()=>media.classList.toggle("zoomed"));
+  }
+  $("viewerMedia").append(media);$("viewerName").textContent=file.name;
+  $("downloadBtn").href=file.url;$("downloadBtn").download=file.name;
+  $("viewer").classList.add("open");
 }
 function closeViewer(){
   const v=$("viewerMedia").querySelector("video");if(v)v.pause();
@@ -428,8 +505,6 @@ function closeViewer(){
 $("viewerClose").onclick=closeViewer;
 $("prevBtn").onclick=()=>openViewer(viewerIndex-1);
 $("nextBtn").onclick=()=>openViewer(viewerIndex+1);
-$("zoomBtn").onclick=()=>{const m=$("viewerContent");if(m&&m.tagName==='IMG')m.classList.toggle('zoomed')};
-$("fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await $("viewer").requestFullscreen();else await document.exitFullscreen()}catch(e){$("viewerHint").textContent='Fullscreen is not supported by this browser.'}};
 $("viewer").onclick=e=>{if(e.target===$("viewer"))closeViewer()};
 $("backBtn").onclick=()=>{
   $("albumView").classList.add("hidden");$("albums").classList.remove("hidden");currentFiles=[];
