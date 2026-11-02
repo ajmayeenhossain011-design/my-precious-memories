@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090609">
-<title>Our Precious Memories ❤️</title>
+<meta name="theme-color" content="#080807">
+<title>Our Precious Memories — Private Collection</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -259,32 +259,218 @@ footer{color:#9f916f}
   .memory{border-radius:14px}
 }
 
+
+/* A+B ART DIRECTION: LUXURY EDITORIAL × MODERN GLASS */
+:root{
+  --ink:#070706;
+  --ink-soft:#11100e;
+  --glass:rgba(22,20,16,.68);
+  --glass-strong:rgba(15,14,12,.88);
+  --champagne:#dfc58f;
+  --champagne-light:#f1dfb9;
+  --champagne-deep:#a98b57;
+  --text-main:#f6f0e5;
+  --text-muted:#b9b09f;
+  --gold-line:rgba(223,197,143,.23);
+}
+html{background:var(--ink)}
+body{
+  color:var(--text-main);
+  background:
+    radial-gradient(ellipse at 50% -18%,rgba(179,143,77,.19),transparent 44%),
+    radial-gradient(ellipse at 7% 54%,rgba(128,102,58,.10),transparent 35%),
+    radial-gradient(ellipse at 96% 78%,rgba(157,126,70,.09),transparent 34%),
+    linear-gradient(180deg,#080807 0%,#060605 55%,#090806 100%);
+  font-family:Georgia,"Times New Roman",serif;
+}
+body::before{opacity:.035;background-size:7px 7px}
+.site-header{
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:64px 18px 49px;text-align:center;
+  border-bottom:1px solid var(--gold-line);
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(185,150,88,.13),transparent 58%),
+    linear-gradient(180deg,rgba(24,22,17,.90),rgba(9,9,8,.66) 74%,rgba(7,7,6,.05));
+  box-shadow:0 24px 80px rgba(0,0,0,.35);
+}
+.site-header::before{
+  content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;opacity:.6;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.018) 48%,transparent 72%);
+}
+.site-header::after{width:150px;margin:29px auto 0;background:linear-gradient(90deg,transparent,var(--champagne),transparent);opacity:.9}
+.hero-kicker,.section-kicker{
+  color:var(--champagne-deep);font:600 10px/1.4 Arial,sans-serif;
+  letter-spacing:.28em;text-transform:uppercase;
+}
+.hero-kicker{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:22px;color:#c7ae7b}
+.hero-kicker span{display:block;width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--champagne-deep))}
+.hero-kicker span:last-child{transform:rotate(180deg)}
+.heart{font-size:17px;color:var(--champagne);text-shadow:0 0 20px rgba(223,197,143,.4);animation:none;margin-bottom:15px}
+.site-header h1{
+  color:var(--champagne-light);font-size:clamp(38px,6.4vw,72px);font-weight:400;
+  letter-spacing:-.045em;line-height:1.02;margin:0 auto 17px;
+  text-shadow:0 8px 42px rgba(191,157,95,.16);
+}
+.site-header h1 em{font-weight:400;color:#d1b77f;font-style:italic}
+.site-header .subtitle{font:italic 15px/1.7 Georgia,serif;color:#c3b9a7;letter-spacing:.025em}
+.hero-footnote{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:25px;color:#8f8269;font:600 9px/1 Arial,sans-serif;letter-spacing:.22em}
+.hero-footnote i{font-style:normal;color:var(--champagne);font-size:12px}
+main{max-width:1160px;padding:46px 24px 76px}
+.panel{
+  overflow:hidden;position:relative;
+  background:linear-gradient(145deg,rgba(37,33,25,.78),rgba(17,16,13,.79) 54%,rgba(11,11,10,.9));
+  border:1px solid rgba(223,197,143,.20);border-radius:23px;padding:29px 31px;margin-bottom:28px;
+  box-shadow:0 22px 65px rgba(0,0,0,.36),inset 0 1px rgba(255,246,222,.075);
+  backdrop-filter:blur(24px) saturate(125%);-webkit-backdrop-filter:blur(24px) saturate(125%);
+}
+.panel::before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(238,218,175,.65),transparent)}
+.panel::after{content:"";position:absolute;right:-100px;top:-130px;width:260px;height:260px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(191,157,95,.07),transparent 70%)}
+h2{color:var(--champagne-light);font-size:clamp(22px,3vw,28px);font-weight:400;letter-spacing:-.02em;margin:7px 0 11px}
+.section-description{max-width:720px;color:#bbb2a1;font:14px/1.75 Arial,sans-serif;margin:0 0 22px}
+.auth-panel{max-width:500px;margin:0 auto 25px;padding:34px 35px}
+.auth-panel h2{text-align:center;font-size:30px;margin-top:10px}
+.auth-panel .section-kicker{text-align:center}
+.auth-panel .section-description{text-align:center;margin:0 auto 22px}
+.auth-panel .section-description::after{content:"";display:block;width:56px;height:1px;margin:21px auto 0;background:linear-gradient(90deg,transparent,var(--champagne-deep),transparent)}
+.upload-panel{padding:30px 31px 27px}
+.upload-panel .section-description{margin-bottom:22px}
+label{color:#d5c7a9;font:600 11px/1.5 Arial,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+input,textarea{
+  display:block;width:100%;padding:14px 16px;margin:9px 0 18px;border-radius:12px;
+  color:#f7f0e2;background:rgba(5,5,4,.58);border:1px solid rgba(223,197,143,.23);outline:none;
+  font:14px Arial,sans-serif;transition:border-color .22s,box-shadow .22s,background .22s;
+}
+input::placeholder,textarea::placeholder{color:#857d6e}
+input:focus,textarea:focus{border-color:rgba(231,207,159,.75);box-shadow:0 0 0 3px rgba(223,197,143,.10),0 0 24px rgba(223,197,143,.07);background:rgba(7,7,6,.82)}
+input[type=file]{padding:12px;background:rgba(4,4,4,.44)}
+input[type=file]::file-selector-button{border:1px solid rgba(223,197,143,.38);border-radius:8px;padding:8px 11px;margin-right:12px;color:#e6d4ae;background:rgba(223,197,143,.10)}
+textarea{min-height:88px;resize:vertical}
+button,.action{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid rgba(245,225,185,.8);border-radius:11px;padding:12px 19px;
+  color:#17130b;background:linear-gradient(135deg,#f0dfb8 0%,#d5ba83 48%,#a88a55 100%);
+  font:600 12px/1.2 Arial,sans-serif;letter-spacing:.035em;text-decoration:none;
+  box-shadow:0 8px 24px rgba(167,132,69,.20),inset 0 1px rgba(255,255,255,.55);
+  transition:transform .22s,filter .22s,box-shadow .22s,border-color .22s;
+}
+button:hover,.action:hover{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 12px 30px rgba(192,159,98,.28),inset 0 1px rgba(255,255,255,.65)}
+button:active,.action:active{transform:translateY(0) scale(.985)}
+button:disabled{opacity:.48;cursor:not-allowed;transform:none}
+.secondary{
+  color:#e6d7b7;background:linear-gradient(135deg,rgba(220,197,151,.12),rgba(255,255,255,.025));
+  border:1px solid rgba(223,197,143,.28);box-shadow:inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+}
+.secondary:hover{border-color:rgba(231,207,159,.55);background:rgba(223,197,143,.12)}
+#loginBtn{width:100%;padding:15px;margin-top:3px}
+#status,#loginStatus{color:#d9c394;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 Arial,sans-serif}
+.toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:42px 0 20px}
+.collection-toolbar{padding:0 2px;margin-top:48px}
+.collection-toolbar h2{font-size:31px;margin-top:7px}
+.view-date{color:#b9a77f;font:12px Arial,sans-serif;letter-spacing:.07em}
+#albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:20px}
+#gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:17px}
+.album{
+  position:relative;overflow:hidden;cursor:pointer;border-radius:17px;
+  border:1px solid rgba(223,197,143,.18);
+  background:linear-gradient(145deg,rgba(33,30,23,.83),rgba(13,13,11,.92));
+  box-shadow:0 15px 42px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  transition:transform .34s cubic-bezier(.2,.8,.2,1),border-color .34s,box-shadow .34s;
+}
+.album:hover,.album:focus-visible{transform:translateY(-6px);border-color:rgba(226,201,151,.58);box-shadow:0 23px 52px rgba(0,0,0,.46),0 0 34px rgba(174,142,82,.09);outline:none}
+.album-cover-wrap{position:relative;overflow:hidden;aspect-ratio:1.48;background:linear-gradient(135deg,#302817,#0b0b09)}
+.album-cover{display:block;width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s;filter:saturate(.82) contrast(1.03)}
+.album:hover .album-cover{transform:scale(1.055);filter:saturate(.98) contrast(1.04)}
+.album-cover-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:45px;color:rgba(223,197,143,.7);background:radial-gradient(circle at 50% 45%,rgba(195,162,101,.2),transparent 40%),linear-gradient(135deg,#272116,#080807)}
+.album-cover-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03) 30%,rgba(0,0,0,.65) 100%)}
+.album-cover-label{position:absolute;left:17px;bottom:15px;color:#f2dfb4;font:600 8px Arial,sans-serif;letter-spacing:.23em;text-shadow:0 2px 12px #000}
+.album-info{padding:17px 18px 18px}
+.album-topline{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.album-category{color:#aa9160;font:600 8px Arial,sans-serif;letter-spacing:.2em}
+.album-number{color:#74664d;font:11px Georgia,serif;letter-spacing:.1em}
+.album-title{color:#f2eadb;font:400 22px/1.25 Georgia,serif;letter-spacing:-.025em;overflow-wrap:anywhere}
+.album-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:11px;border-top:1px solid rgba(223,197,143,.12)}
+.album-date{color:#b7a47b;font:11px Arial,sans-serif;letter-spacing:.025em;margin:0}
+.album-count{color:#938a79;font:10px Arial,sans-serif;letter-spacing:.015em}
+.memory{position:relative;overflow:hidden;aspect-ratio:1;border-radius:14px;background:linear-gradient(145deg,#292319,#090908);border:1px solid rgba(223,197,143,.19);box-shadow:0 9px 26px rgba(0,0,0,.36);transition:transform .28s,border-color .28s,box-shadow .28s}
+.memory:hover{transform:translateY(-3px);border-color:rgba(223,197,143,.56);box-shadow:0 15px 35px rgba(0,0,0,.42),0 0 25px rgba(174,142,82,.08)}
+.memory img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;opacity:0;animation:photoReveal .5s ease forwards}
+@keyframes photoReveal{to{opacity:1}}
+.video-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#ead6aa;font:25px Arial,sans-serif;background:radial-gradient(circle,rgba(214,183,122,.20),transparent 35%),linear-gradient(145deg,#272219,#090908)}
+.video-card-label{position:absolute;left:11px;bottom:10px;padding:6px 9px;border-radius:20px;border:1px solid rgba(223,197,143,.25);background:rgba(8,8,7,.56);color:#e7d5ae;font:600 8px Arial,sans-serif;letter-spacing:.15em;backdrop-filter:blur(10px)}
+.empty{grid-column:1/-1;text-align:center;color:#a99f8c;padding:46px 12px;font:14px/1.8 Georgia,serif}
+.hidden{display:none!important}
+#albumView{margin-top:42px}
+#albumView .toolbar{margin-top:0;padding-bottom:19px;border-bottom:1px solid rgba(223,197,143,.14)}
+#viewDescription{color:#b8ae9c;font:14px/1.7 Arial,sans-serif}
+/* cinematic lightbox */
+#viewer{
+  display:none;position:fixed;inset:0;z-index:1000;isolation:isolate;overflow:hidden;
+  flex-direction:column;align-items:center;justify-content:center;padding:78px 22px 30px;
+  background:rgba(4,4,3,.94);backdrop-filter:blur(28px) saturate(115%);-webkit-backdrop-filter:blur(28px) saturate(115%);
+}
+#viewer::before{content:"";position:absolute;inset:-80px;z-index:-2;opacity:.38;filter:blur(45px);background:radial-gradient(ellipse at 50% 45%,rgba(165,129,65,.26),transparent 58%);pointer-events:none}
+#viewer::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 22%,transparent 74%,rgba(0,0,0,.7))}
+#viewer.open{display:flex;animation:viewerFade .32s ease}
+@keyframes viewerFade{from{opacity:0}to{opacity:1}}
+.viewer-topline{position:absolute;top:25px;left:30px;right:91px;display:flex;justify-content:space-between;gap:15px;color:#b9a477;font:600 9px Arial,sans-serif;letter-spacing:.22em}
+#viewerClose{position:absolute;top:15px;right:19px;z-index:3;width:46px;height:46px;padding:0;border-radius:50%;color:#f0dfbc;background:rgba(25,22,16,.64);border:1px solid rgba(223,197,143,.31);box-shadow:0 8px 26px rgba(0,0,0,.32);font:300 27px/1 Arial,sans-serif;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+#viewerMedia{display:flex;align-items:center;justify-content:center;max-width:min(94vw,1500px);max-height:73vh;min-height:180px;border:1px solid rgba(223,197,143,.22);border-radius:19px;padding:8px;background:linear-gradient(145deg,rgba(223,197,143,.08),rgba(255,255,255,.018));box-shadow:0 28px 95px rgba(0,0,0,.68),inset 0 1px rgba(255,255,255,.08);overflow:hidden}
+#viewerContent{display:block;max-width:min(91vw,1460px);max-height:70vh;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 12px 45px rgba(0,0,0,.48);animation:mediaIn .34s ease;touch-action:pan-y}
+@keyframes mediaIn{from{opacity:.3;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+#viewerContent.zoomed{max-width:none;max-height:none;transform:scale(1.55);cursor:zoom-out}
+#viewerContent:not(.zoomed){cursor:zoom-in}
+.viewer-loading{padding:34px 24px;color:#c7b58b;text-align:center;font:italic 15px Georgia,serif}
+.viewer-loading span{display:block;margin-top:10px;font-style:normal;color:#e1c78f}
+#viewerName{max-width:90%;margin-top:17px;color:#d4c29e;text-align:center;overflow-wrap:anywhere;font:12px Arial,sans-serif;letter-spacing:.06em}
+.viewer-controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:21px;padding:10px;border-radius:15px;border:1px solid rgba(223,197,143,.21);background:rgba(23,20,14,.62);box-shadow:0 15px 44px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.viewer-controls button,.viewer-controls .action{min-width:115px}
+#viewerHint{margin-top:14px;color:#8f846d;font:9px Arial,sans-serif;letter-spacing:.17em;text-align:center}
+#logoutArea{text-align:right;margin-top:28px}
+footer{padding:12px 12px 35px;color:#81755d;text-align:center;font:italic 12px Georgia,serif;letter-spacing:.04em}
+@media(max-width:700px){
+ .site-header{padding:49px 14px 37px}.site-header h1{font-size:clamp(36px,10vw,52px)}.site-header .subtitle{font-size:13px}.hero-footnote{font-size:8px;gap:10px}
+ main{padding:30px 14px 54px}.panel{padding:22px 19px;border-radius:18px}.auth-panel{padding:27px 22px}.upload-panel{padding:23px 19px}
+ #albums{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .album{border-radius:13px}.album-cover-wrap{aspect-ratio:1.12}.album-info{padding:12px 12px 13px}.album-title{font-size:17px}.album-topline{margin-bottom:7px}.album-meta{display:block;margin-top:9px;padding-top:8px}.album-count{display:block;margin-top:6px}.album-cover-label{left:10px;bottom:10px;font-size:7px}
+ .toolbar{align-items:center;margin:33px 0 17px}.collection-toolbar h2{font-size:26px}.collection-toolbar{margin-top:37px}
+ #viewer{padding:66px 9px 22px}.viewer-topline{top:20px;left:15px;right:76px;font-size:8px;letter-spacing:.14em}
+ #viewerMedia{max-width:98vw;max-height:70vh;min-height:140px;padding:5px;border-radius:14px}#viewerContent{max-width:94vw;max-height:67vh;border-radius:9px}
+ .viewer-controls{gap:6px;margin-top:15px;padding:7px}.viewer-controls button,.viewer-controls .action{min-width:0;padding:10px 12px;font-size:11px}.viewer-controls .action{padding-inline:14px}#viewerHint{font-size:8px;letter-spacing:.09em}
+}
+@media(max-width:360px){#albums{grid-template-columns:1fr}.album-cover-wrap{aspect-ratio:1.65}.album-info{padding:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 
 <body>
-<header>
-  <div class="heart">♥</div>
-  <h1>Our Precious Memories</h1>
-  <div class="subtitle">Every moment with you is a beautiful memory</div>
+<header class="site-header">
+  <div class="hero-kicker"><span></span> A PRIVATE COLLECTION <span></span></div>
+  <div class="heart" aria-hidden="true">✦</div>
+  <h1>Our Precious <em>Memories</em></h1>
+  <div class="subtitle">A little place for the moments we never want to lose.</div>
+  <div class="hero-footnote"><span>COLLECTED WITH LOVE</span><i>✧</i><span>KEPT FOREVER</span></div>
 </header>
 
 <main>
-<section class="panel" id="loginPanel">
-  <h2>Welcome Back ❤️</h2>
-  <p style="color:#c5aab5">A private place for our most beautiful memories.</p>
+<section class="panel auth-panel" id="loginPanel">
+  <div class="section-kicker">YOUR PRIVATE ARCHIVE</div>
+  <h2>Welcome back</h2>
+  <p class="section-description">A quiet place for the moments that mean the most.</p>
   <form id="loginForm">
     <input id="email" type="email" placeholder="Email address" required autocomplete="username">
     <input id="password" type="password" placeholder="Password" required autocomplete="current-password">
-    <button id="loginBtn" type="submit">Unlock Our Memories ❤️</button>
+    <button id="loginBtn" type="submit">Unlock the collection</button>
   </form>
   <p id="loginStatus"></p>
 </section>
 
 <section id="appPanel" class="hidden">
-  <section class="panel">
-    <h2>Create or Add to a Memory ❤️</h2>
-    <p style="color:#c5aab2">একটি তারিখে একটি অ্যালবাম থাকবে। একই তারিখ আবার নির্বাচন করলে আগের অ্যালবামেই ছবি ও ভিডিও যোগ হবে।</p>
+  <section class="panel upload-panel">
+    <div class="section-kicker">ADD A NEW CHAPTER</div>
+    <h2>Save a new memory</h2>
+    <p class="section-description">একটি তারিখে একটি অ্যালবাম থাকবে। একই তারিখ আবার নির্বাচন করলে আগের অ্যালবামেই ছবি ও ভিডিও যোগ হবে।</p>
     <label for="albumDate">Memory Date</label>
     <input id="albumDate" type="date" required>
     <label for="albumTitle">Album Name</label>
@@ -297,16 +483,16 @@ footer{color:#9f916f}
     <p id="status"></p>
   </section>
 
-  <div class="toolbar">
-    <h2 style="margin:0">Our Memory Albums</h2>
-    <button class="secondary" id="refreshBtn">Refresh</button>
+  <div class="toolbar collection-toolbar">
+    <div><div class="section-kicker">THE COLLECTION</div><h2 style="margin:5px 0 0">Memory albums</h2></div>
+    <button class="secondary" id="refreshBtn">↻ &nbsp; Refresh</button>
   </div>
   <div id="albums"><div class="empty">Loading albums...</div></div>
 
   <section id="albumView" class="hidden">
-    <div class="toolbar">
-      <div><h2 id="viewTitle" style="margin:0 0 5px"></h2><div id="viewDate" style="color:#f18aa2"></div></div>
-      <button class="secondary" id="backBtn">← All Albums</button>
+    <div class="toolbar album-toolbar">
+      <div><div class="section-kicker">A CHAPTER IN OUR STORY</div><h2 id="viewTitle" style="margin:5px 0"></h2><div id="viewDate" class="view-date"></div></div>
+      <button class="secondary" id="backBtn">← &nbsp; All albums</button>
     </div>
     <p id="viewDescription" style="color:#c5aab2"></p>
     <div id="gallery"></div>
@@ -316,6 +502,7 @@ footer{color:#9f916f}
 </main>
 
 <div id="viewer" aria-label="Photo viewer">
+  <div class="viewer-topline"><span>OUR PRECIOUS MEMORIES</span><span id="viewerCounter">01 / 01</span></div>
   <button id="viewerClose" aria-label="Close viewer">×</button>
   <div id="viewerMedia"></div>
   <div id="viewerName"></div>
@@ -426,8 +613,8 @@ async function loadAlbums(){
     if(itemError)return null;
     const files=(items||[]).filter(x=>x.name&&x.name!=="album.json");
     if(!files.length)return null;
-    const metaFile=files.length>=0&&(items||[]).some(x=>x.name==="album.json");
-    const coverFile=files.find(file=>/\.(jpg|jpeg|png|gif|webp|bmp|avif|mp4|webm|mov|m4v)$/i.test(file.name));
+    const metaFile=(items||[]).some(x=>x.name==="album.json");
+    const coverFile=files.find(file=>/\.(jpg|jpeg|png|gif|webp|bmp|avif)$/i.test(file.name));
     const [metaUrl,cover]=await Promise.all([
       metaFile?signedUrl(`${folderPath}/album.json`):Promise.resolve(null),
       coverFile?signedUrl(`${folderPath}/${coverFile.name}`):Promise.resolve(null)
@@ -443,16 +630,32 @@ async function loadAlbums(){
 /* RENDER ALBUMS */
 function renderAlbums(){
   $("albums").innerHTML="";
-  if(!albums.length){$("albums").append(make("div","empty","No albums yet. Create your first memory ❤️"));return}
-  albums.forEach(album=>{
-    const card=make("div","album");
-    if(album.cover){const img=make("img","album-cover");img.src=album.cover;img.alt=album.title;card.append(img)}
-    else card.append(make("div","album-cover","❤️"));
+  if(!albums.length){$("albums").append(make("div","empty","No albums yet. Create your first memory ✧"));return}
+  albums.forEach((album,index)=>{
+    const card=make("article","album");
+    const cover=make("div","album-cover-wrap");
+    if(album.cover){
+      const img=make("img","album-cover");img.src=album.cover;img.alt=album.title;img.loading="lazy";img.decoding="async";cover.append(img);
+    }else{
+      cover.append(make("div","album-cover-placeholder","✧"));
+    }
+    cover.append(make("div","album-cover-shade"));
+    cover.append(make("span","album-cover-label","A DAY TO REMEMBER"));
+    card.append(cover);
     const info=make("div","album-info");
+    const topline=make("div","album-topline");
+    topline.append(make("span","album-category","MEMORY ALBUM"));
+    topline.append(make("span","album-number",String(index+1).padStart(2,"0")));
+    info.append(topline);
     info.append(make("div","album-title",album.title));
-    info.append(make("div","album-date",niceDate(album.date)));
-    info.append(make("div","album-count",`${album.count-album.videos} Photos · ${album.videos} Videos`));
-    card.append(info);card.onclick=()=>openAlbum(album);$("albums").append(card);
+    const meta=make("div","album-meta");
+    meta.append(make("span","album-date",niceDate(album.date)));
+    meta.append(make("span","album-count",`${album.count-album.videos} Photos · ${album.videos} Videos`));
+    info.append(meta);
+    card.append(info);card.setAttribute("tabindex","0");card.setAttribute("role","button");card.setAttribute("aria-label",`Open ${album.title}`);
+    card.onclick=()=>openAlbum(album);
+    card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openAlbum(album)}};
+    $("albums").append(card);
   });
 }
 
@@ -465,40 +668,77 @@ async function openAlbum(album){
   const {data,error}=await db.storage.from(BUCKET).list(album.path,{limit:300,sortBy:{column:"created_at",order:"asc"}});
   if(error){$("gallery").textContent=error.message;return}
   const files=(data||[]).filter(f=>f.name&&f.name!=="album.json");
-  const urls=await Promise.all(files.map(file=>signedUrl(`${album.path}/${file.name}`)));
-  currentFiles=files.map((file,index)=>urls[index]?{name:file.name,path:`${album.path}/${file.name}`,url:urls[index]}:null).filter(Boolean);
+  currentFiles=files.map(file=>({name:file.name,path:`${album.path}/${file.name}`,url:null,urlPromise:null}));
   renderFiles();
 }
 
-/* RENDER PHOTOS AND VIDEOS */
+async function ensureFileUrl(file){
+  if(file.url)return file.url;
+  if(!file.urlPromise){file.urlPromise=signedUrl(file.path).then(url=>{file.url=url;if(!url)file.urlPromise=null;return url}).catch(()=>{file.urlPromise=null;return null});}
+  return file.urlPromise;
+}
+
+/* RENDER PHOTOS AND VIDEOS - signed URLs are requested only when needed */
 function renderFiles(){
   $("gallery").innerHTML="";
   if(!currentFiles.length){$("gallery").append(make("div","empty","No photos or videos in this album yet."));return}
+  let observer=null;
+  if("IntersectionObserver" in window){
+    observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting)return;
+        observer.unobserve(entry.target);
+        const file=currentFiles[Number(entry.target.dataset.fileIndex)];
+        const img=entry.target.querySelector("img");
+        if(!file||!img)return;
+        ensureFileUrl(file).then(url=>{if(url&&img.isConnected)img.src=url;else if(img.isConnected)img.alt="Could not load this photo";});
+      });
+    },{rootMargin:"280px 0px"});
+  }
   currentFiles.forEach((file,index)=>{
-    const card=make("div","memory"),media=make(videoFile(file.name)?"video":"img");
-    media.src=file.url;
-    if(media.tagName==="VIDEO"){media.muted=true;media.playsInline=true;media.preload="none"}
-    else{media.alt=file.name;media.loading="lazy";media.decoding="async"}
-    card.append(media);card.onclick=()=>openViewer(index);$("gallery").append(card);
+    const isVideo=videoFile(file.name);
+    const card=make("div",isVideo?"memory video-memory":"memory");
+    card.dataset.fileIndex=String(index);
+    if(isVideo){
+      card.append(make("div","video-placeholder","▶"));
+      card.append(make("span","video-card-label","VIDEO"));
+    }else{
+      const media=make("img","gallery-photo");media.alt=file.name;media.loading="lazy";media.decoding="async";
+      card.append(media);
+      if(observer)observer.observe(card);
+      else ensureFileUrl(file).then(url=>{if(url&&media.isConnected)media.src=url;});
+    }
+    card.onclick=()=>openViewer(index);$("gallery").append(card);
   });
 }
 
 /* CINEMATIC VIEWER */
-function openViewer(index){
+let viewerLoadToken=0;
+async function openViewer(index){
   if(!currentFiles.length)return;
   viewerIndex=(index+currentFiles.length)%currentFiles.length;
-  const file=currentFiles[viewerIndex];$("viewerMedia").innerHTML="";
-  const media=make(videoFile(file.name)?"video":"img");media.id="viewerContent";media.src=file.url;media.onerror=()=>{$("viewerHint").textContent="Could not load this item. Check your connection and try again.";};
-  if(media.tagName==="VIDEO"){media.controls=true;media.autoplay=true;media.playsInline=true}
-  else{
-    media.alt=file.name;
-    media.addEventListener("click",()=>media.classList.toggle("zoomed"));
-  }
-  $("viewerMedia").append(media);$("viewerName").textContent=file.name;
-  $("downloadBtn").href=file.url;$("downloadBtn").download=file.name;
+  const file=currentFiles[viewerIndex],token=++viewerLoadToken;
+  $("viewerMedia").innerHTML="";
+  $("viewerMedia").append(make("div","viewer-loading","Loading memory  ✧"));
+  $("viewerName").textContent=file.name;
+  $("viewerCounter").textContent=`${String(viewerIndex+1).padStart(2,"0")} / ${String(currentFiles.length).padStart(2,"0")}`;
+  $("viewerHint").textContent="← → TO NAVIGATE · ESC TO CLOSE · TAP PHOTO TO ZOOM";
   $("viewer").classList.add("open");
+  const url=await ensureFileUrl(file);
+  if(token!==viewerLoadToken||!$("viewer").classList.contains("open"))return;
+  if(!url){$("viewerMedia").innerHTML="";$("viewerMedia").append(make("div","viewer-loading","This memory could not be loaded. Please try again."));return}
+  const media=make(videoFile(file.name)?"video":"img");media.id="viewerContent";media.src=url;
+  media.onerror=()=>{$("viewerHint").textContent="Could not load this item. Check your connection and try again.";};
+  if(media.tagName==="VIDEO"){media.controls=true;media.autoplay=true;media.playsInline=true;media.preload="metadata"}
+  else{media.alt=file.name;media.decoding="async";media.addEventListener("click",()=>media.classList.toggle("zoomed"));}
+  $("viewerMedia").innerHTML="";$("viewerMedia").append(media);
+  $("downloadBtn").href=url;$("downloadBtn").download=file.name;
+  // Warm only the adjacent photo to make the next/previous action feel immediate.
+  const nextFile=currentFiles[(viewerIndex+1)%currentFiles.length];
+  if(nextFile&&!videoFile(nextFile.name)&&!nextFile.url)ensureFileUrl(nextFile).then(nextUrl=>{if(nextUrl){const warm=new Image();warm.src=nextUrl;}});
 }
 function closeViewer(){
+  viewerLoadToken++;
   const v=$("viewerMedia").querySelector("video");if(v)v.pause();
   $("viewer").classList.remove("open");$("viewerMedia").innerHTML="";
 }
