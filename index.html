@@ -94,6 +94,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .album-date{font-size:13px;color:#f18aa5;margin:9px 0}
 .album-count{font-size:12px;color:#c5aab5;letter-spacing:.3px}
 .memory{
+  content-visibility:auto;contain-intrinsic-size:220px;
   position:relative;overflow:hidden;border-radius:16px;background:#1b1015;
   border:1px solid #612337;aspect-ratio:1;box-shadow:0 8px 23px #0007;
   transition:transform .28s,border-color .28s,box-shadow .28s;
@@ -342,28 +343,24 @@ async function loadAlbums(){
   const {data,error}=await db.storage.from(BUCKET).list(currentUser.id,{limit:300,sortBy:{column:"name",order:"desc"}});
   if(error){$("albums").innerHTML="";$("albums").append(make("div","empty",error.message));return}
   const folders=(data||[]).filter(x=>!x.id&&/^\d{4}-\d{2}-\d{2}$/.test(x.name));
-  albums=[];
-  for(const folder of folders){
+  // List every date folder together instead of waiting for each network request in sequence.
+  const results=await Promise.all(folders.map(async folder=>{
     const folderPath=`${currentUser.id}/${folder.name}`;
     const {data:items,error:itemError}=await db.storage.from(BUCKET).list(folderPath,{limit:300,sortBy:{column:"created_at",order:"asc"}});
-    if(itemError)continue;
+    if(itemError)return null;
     const files=(items||[]).filter(x=>x.name&&x.name!=="album.json");
-    if(!files.length)continue;
+    if(!files.length)return null;
+    const metaFile=(items||[]).some(x=>x.name==="album.json");
+    const coverFile=files.find(x=>/\.(jpg|jpeg|png|webp|avif)$/i.test(x.name));
+    const [metaUrl,cover]=await Promise.all([
+      metaFile?signedUrl(`${folderPath}/album.json`):Promise.resolve(null),
+      coverFile?signedUrl(`${folderPath}/${coverFile.name}`):Promise.resolve(null)
+    ]);
     let meta={title:niceDate(folder.name),description:""};
-    const hasMeta=(items||[]).some(x=>x.name==="album.json");
-    if(hasMeta){
-      const url=await signedUrl(`${folderPath}/album.json`);
-      if(url){try{const response=await fetch(url);if(response.ok)meta={...meta,...await response.json()}}catch(e){}}
-    }
-    let cover=null;
-    for(const file of files){
-      if(/\.(jpg|jpeg|png|gif|webp|bmp|avif|mp4|webm|mov|m4v)$/i.test(file.name)){
-        cover=await signedUrl(`${folderPath}/${file.name}`);if(cover)break;
-      }
-    }
-    albums.push({date:folder.name,path:folderPath,title:meta.title||niceDate(folder.name),description:meta.description||"",count:files.length,videos:files.filter(x=>videoFile(x.name)).length,cover});
-  }
-  albums.sort((a,b)=>b.date.localeCompare(a.date));renderAlbums();
+    if(metaUrl){try{const response=await fetch(metaUrl);if(response.ok)meta={...meta,...await response.json()}}catch(e){}}
+    return {date:folder.name,path:folderPath,title:meta.title||niceDate(folder.name),description:meta.description||"",count:files.length,videos:files.filter(x=>videoFile(x.name)).length,cover};
+  }));
+  albums=results.filter(Boolean).sort((a,b)=>b.date.localeCompare(a.date));renderAlbums();
 }
 
 /* RENDER ALBUMS */
@@ -390,12 +387,10 @@ async function openAlbum(album){
   $("gallery").append(make("div","empty","Loading memories..."));
   const {data,error}=await db.storage.from(BUCKET).list(album.path,{limit:300,sortBy:{column:"created_at",order:"asc"}});
   if(error){$("gallery").textContent=error.message;return}
-  const files=(data||[]).filter(f=>f.name&&f.name!=="album.json");currentFiles=[];
-  for(const file of files){
-    const path=`${album.path}/${file.name}`,url=await signedUrl(path);
-    if(url)currentFiles.push({name:file.name,path,url});
-  }
-  renderFiles();
+  const files=(data||[]).filter(f=>f.name&&f.name!=="album.json");
+  // Create signed URLs concurrently to avoid one-by-one loading delays.
+  const signed=await Promise.all(files.map(async file=>({name:file.name,path:`${album.path}/${file.name}`,url:await signedUrl(`${album.path}/${file.name}`)})));
+  currentFiles=signed.filter(file=>file.url);renderFiles();
 }
 
 /* RENDER PHOTOS AND VIDEOS */
@@ -404,9 +399,11 @@ function renderFiles(){
   if(!currentFiles.length){$("gallery").append(make("div","empty","No photos or videos in this album yet."));return}
   currentFiles.forEach((file,index)=>{
     const card=make("div","memory"),media=make(videoFile(file.name)?"video":"img");
-    media.src=file.url;
-    if(media.tagName==="VIDEO"){media.muted=true;media.playsInline=true;media.preload="metadata"}
-    else{media.alt=file.name;media.loading="lazy"}
+    if(media.tagName==="VIDEO"){
+      media.muted=true;media.playsInline=true;media.preload="none";
+      media.setAttribute("aria-label",`Play ${file.name}`);
+      media.poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23210d18'/%3E%3Ccircle cx='200' cy='200' r='48' fill='%23ed285b'/%3E%3Cpath d='M185 170v60l50-30z' fill='white'/%3E%3C/svg%3E";
+    }else{media.src=file.url;media.alt=file.name;media.loading="lazy";media.decoding="async"}
     card.append(media);card.onclick=()=>openViewer(index);$("gallery").append(card);
   });
 }
@@ -418,7 +415,7 @@ function openViewer(index){
   const file=currentFiles[viewerIndex];$('viewerMedia').innerHTML='';
   const media=make(videoFile(file.name)?'video':'img');media.id='viewerContent';media.src=file.url;
   if(media.tagName==='VIDEO'){media.controls=true;media.autoplay=true;media.playsInline=true;media.preload='metadata'}
-  else{media.alt=file.name;media.addEventListener('click',()=>media.classList.toggle('zoomed'))}
+  else{media.alt=file.name;media.decoding='async';media.addEventListener('click',()=>media.classList.toggle('zoomed'))}
   $('viewerMedia').append(media);$('viewerName').textContent=file.name;
   $('downloadBtn').href=file.url;$('downloadBtn').download=file.name;
   $('zoomBtn').classList.toggle('hidden',media.tagName==='VIDEO');
