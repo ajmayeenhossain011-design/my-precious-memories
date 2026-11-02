@@ -159,6 +159,26 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* PREMIUM GLASS + CINEMATIC VIEWER */
+.panel{background:linear-gradient(135deg,rgba(91,28,54,.43),rgba(20,10,17,.56));border:1px solid rgba(255,210,225,.20);backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);box-shadow:0 20px 55px #0008,inset 0 1px rgba(255,255,255,.10)}
+.album{background:linear-gradient(145deg,rgba(111,35,66,.42),rgba(17,9,15,.55));backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-color:rgba(255,180,205,.22)}
+.memory{background:rgba(28,12,21,.42);border-color:rgba(255,190,211,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+input,textarea{background:rgba(8,5,9,.52);border-color:rgba(255,178,204,.27);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.secondary{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.045));border-color:rgba(255,220,232,.25);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#viewer{padding:76px 18px 28px;background:rgba(3,2,5,.88);backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%)}
+#viewerMedia{position:relative;width:min(94vw,1500px);height:min(74vh,900px);max-width:100%;max-height:none;min-height:180px;overflow:hidden;border:1px solid rgba(255,220,235,.17);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 25px 90px #000b,inset 0 1px #ffffff18;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#viewerContent{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 12px 45px #0009;transition:transform .28s ease;touch-action:pan-y}
+#viewerContent.zoomed{max-width:none;max-height:none;transform:scale(2);cursor:zoom-out}
+#viewerContent:not(.zoomed){cursor:zoom-in}
+#viewerName{padding:9px 16px;border:1px solid rgba(255,210,225,.15);border-radius:999px;background:rgba(255,255,255,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.viewer-top{position:absolute;top:14px;left:18px;right:76px;color:#f7dce5;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;opacity:.8}
+#viewerClose{top:13px;right:15px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.viewer-controls{padding:10px 13px;border:1px solid rgba(255,220,235,.16);border-radius:18px;background:rgba(25,12,20,.48);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 40px #0006}
+.memory img,.memory video{transition:transform .45s ease,filter .35s ease}
+.memory:hover img,.memory:hover video{transform:scale(1.055);filter:saturate(1.08)}
+@media(max-width:600px){#viewer{padding:62px 8px 16px}#viewerMedia{width:96vw;height:68vh;min-height:220px;border-radius:15px}#viewerContent{max-width:100%;max-height:100%}#viewerContent.zoomed{transform:scale(1.65)}.viewer-controls{width:96vw;gap:6px;padding:8px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.viewer-controls button,.viewer-controls .action{min-width:0;padding:10px 4px;font-size:12px}}
+
 </style>
 </head>
 
@@ -215,16 +235,18 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 </section>
 </main>
 
-<div id="viewer" aria-label="Photo viewer">
+<div id="viewer" aria-label="Cinematic photo and video viewer">
+  <div class="viewer-top">PRECIOUS MEMORIES · CINEMATIC VIEW</div>
   <button id="viewerClose" aria-label="Close viewer">×</button>
-  <div id="viewerMedia"></div>
-  <div id="viewerName"></div>
+  <div id="viewerMedia"></div><div id="viewerName"></div>
   <div class="viewer-controls">
-    <button class="secondary" id="prevBtn">❮ Previous</button>
-    <a id="downloadBtn" class="action" download>Download</a>
+    <button class="secondary" id="prevBtn">❮ Prev</button>
+    <button class="secondary" id="zoomBtn">⌕ Zoom</button>
+    <a id="downloadBtn" class="action" download>↓ Save</a>
+    <button class="secondary" id="fullBtn">⛶ Full</button>
     <button class="secondary" id="nextBtn">Next ❯</button>
   </div>
-  <div id="viewerHint">← → TO NAVIGATE · ESC TO CLOSE · TAP PHOTO TO ZOOM</div>
+  <div id="viewerHint">SWIPE OR USE ← → · ESC TO CLOSE · TAP PHOTO TO ZOOM</div>
 </div>
 
 <footer>Made with ❤️ for our precious memories</footer>
@@ -393,16 +415,14 @@ function renderFiles(){
 function openViewer(index){
   if(!currentFiles.length)return;
   viewerIndex=(index+currentFiles.length)%currentFiles.length;
-  const file=currentFiles[viewerIndex];$("viewerMedia").innerHTML="";
-  const media=make(videoFile(file.name)?"video":"img");media.id="viewerContent";media.src=file.url;
-  if(media.tagName==="VIDEO"){media.controls=true;media.autoplay=true;media.playsInline=true}
-  else{
-    media.alt=file.name;
-    media.addEventListener("click",()=>media.classList.toggle("zoomed"));
-  }
-  $("viewerMedia").append(media);$("viewerName").textContent=file.name;
-  $("downloadBtn").href=file.url;$("downloadBtn").download=file.name;
-  $("viewer").classList.add("open");
+  const file=currentFiles[viewerIndex];$('viewerMedia').innerHTML='';
+  const media=make(videoFile(file.name)?'video':'img');media.id='viewerContent';media.src=file.url;
+  if(media.tagName==='VIDEO'){media.controls=true;media.autoplay=true;media.playsInline=true;media.preload='metadata'}
+  else{media.alt=file.name;media.addEventListener('click',()=>media.classList.toggle('zoomed'))}
+  $('viewerMedia').append(media);$('viewerName').textContent=file.name;
+  $('downloadBtn').href=file.url;$('downloadBtn').download=file.name;
+  $('zoomBtn').classList.toggle('hidden',media.tagName==='VIDEO');
+  $('viewer').classList.add('open');
 }
 function closeViewer(){
   const v=$("viewerMedia").querySelector("video");if(v)v.pause();
@@ -411,6 +431,8 @@ function closeViewer(){
 $("viewerClose").onclick=closeViewer;
 $("prevBtn").onclick=()=>openViewer(viewerIndex-1);
 $("nextBtn").onclick=()=>openViewer(viewerIndex+1);
+$("zoomBtn").onclick=()=>{const m=$("viewerContent");if(m&&m.tagName==='IMG')m.classList.toggle('zoomed')};
+$("fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await $("viewer").requestFullscreen();else await document.exitFullscreen()}catch(e){$("viewerHint").textContent='Fullscreen is not supported by this browser.'}};
 $("viewer").onclick=e=>{if(e.target===$("viewer"))closeViewer()};
 $("backBtn").onclick=()=>{
   $("albumView").classList.add("hidden");$("albums").classList.remove("hidden");currentFiles=[];
