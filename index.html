@@ -866,4 +866,58 @@ $("uploadBtn").onclick=async()=>{
         {
           cacheControl:"3600",
           upsert:false,
-          contentType:file.ty
+                    contentType: file.type
+        }
+      );
+
+      if(error){
+        message("Upload failed: "+error.message);
+        return;
+      }
+    }
+
+    message("All files uploaded successfully!")
+    
+    await loadAlbums();
+
+  } catch(error) {
+    message("Upload error: " + error.message);
+
+  } finally {
+    isUploading = false;
+    $("uploadBtn").disabled = false;
+  }
+};
+
+/* RESTORE LOGIN SESSION */
+(async function(){
+  try {
+    const {data, error} = await db.auth.getSession();
+
+    if(error) {
+      $("loginStatus").textContent = error.message;
+      return;
+    }
+
+    const session = data.session;
+
+    if(session && session.user) {
+      const lastActivity = Number(
+        localStorage.getItem(ACTIVITY_KEY) || 0
+      );
+
+      if(lastActivity && Date.now() - lastActivity < IDLE_LIMIT) {
+        showApp(session.user);
+      } else {
+        await db.auth.signOut();
+        localStorage.removeItem(ACTIVITY_KEY);
+      }
+    }
+  } catch(error) {
+    $("loginStatus").textContent =
+      "Session error: " + error.message;
+  }
+})();
+</script>
+</body>
+</html>
