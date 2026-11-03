@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ajmayeenhossain011-design.github.io/my-precious-memories/sitemap.xml
