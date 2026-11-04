@@ -63,8 +63,6 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const action = String(body.action || "");
     const masterPassword = String(body.masterPassword || "");
-    if (!masterPassword) return json({ error: "Master Password is required." }, 400);
-
     const { data: credential, error: credentialError } = await admin
       .from("memory_admin_credentials").select("password_salt,password_hash").eq("user_id", user.id).maybeSingle();
     if (credentialError) throw credentialError;
@@ -85,6 +83,7 @@ Deno.serve(async (req) => {
     }
 
     if (action === "status") return json({ ok: true, hasMasterPassword: Boolean(credential) });
+    if (!masterPassword) return json({ error: "Master Password is required." }, 400);
     if (!credential) return json({ error: "Set up your Master Password first." }, 403);
     const candidate = await derive(masterPassword, credential.password_salt);
     if (!safeEqual(candidate, credential.password_hash)) return json({ error: "Incorrect Master Password." }, 403);
