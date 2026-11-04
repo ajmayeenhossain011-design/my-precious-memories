@@ -84,6 +84,7 @@ Deno.serve(async (req) => {
       return json({ ok: true, message: "Master Password created." });
     }
 
+    if (action === "status") return json({ ok: true, hasMasterPassword: Boolean(credential) });
     if (!credential) return json({ error: "Set up your Master Password first." }, 403);
     const candidate = await derive(masterPassword, credential.password_salt);
     if (!safeEqual(candidate, credential.password_hash)) return json({ error: "Incorrect Master Password." }, 403);
