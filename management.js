@@ -13,9 +13,14 @@
     .manage-menu-item{display:block;width:100%;padding:10px 12px;text-align:left;border:0;border-radius:8px;background:transparent;color:#eee5d4;font:inherit;font-size:13px;cursor:pointer}
     .manage-menu-item:hover{background:rgba(203,184,145,.12)}
     .manage-menu-item.danger{color:#e89a91}
+    .album{position:relative}
+    .album .manage-menu-wrap{position:absolute;right:8px;top:8px;padding:0}
+    .album .manage-menu{top:38px;right:0}
+    .album:has(.manage-menu.open){z-index:30}
     .memory{position:relative}
     .memory .manage-menu-wrap{position:absolute;right:5px;top:5px;padding:0}
     .memory .manage-menu{top:38px;right:0}
+    .memory:has(.manage-menu.open){z-index:30}
     .text-memory-card{position:relative;padding-right:52px}
     .text-memory-card .manage-menu-wrap{position:absolute;right:8px;top:8px;padding:0}
     .text-memory-card .manage-menu{top:38px;right:0}
