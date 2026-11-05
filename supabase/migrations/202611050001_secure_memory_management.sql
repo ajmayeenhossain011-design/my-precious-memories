@@ -28,6 +28,6 @@ create policy "Owner can read text memories"
 
 -- Mutations must go through the memory-admin Edge Function, which verifies
 -- the separate Master Password and uses the server-only service-role key.
-drop policy if exists "Private owner upload riefn_0" on storage.objects;
-drop policy if exists "Private owner update riefn_0" on storage.objects;
-drop policy if exists "Private owner delete riefn_0" on storage.objects;
+drop policy if exists "Private owner upload rieftn_0" on storage.objects;
+drop policy if exists "Private owner update rieftn_0" on storage.objects;
+drop policy if exists "Private owner delete rieftn_0" on storage.objects;
