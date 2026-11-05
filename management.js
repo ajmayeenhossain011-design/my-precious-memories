@@ -5,12 +5,20 @@
   const BUCKET_NAME = "PRECIOUS MEMORIES";
   const style = document.createElement("style");
   style.textContent = `
-    .manage-top-btn,.manage-action{border:1px solid rgba(203,184,145,.55);background:rgba(20,19,16,.88);color:#e5d7b8;border-radius:12px;padding:10px 14px;font:inherit;cursor:pointer}
-    .manage-top-btn{margin-left:8px}.manage-action{font-size:12px;padding:7px 10px}
-    .manage-actions{display:flex;gap:7px;justify-content:flex-end;padding:8px 12px 12px}
-    .manage-action.danger{border-color:#a34c4c;color:#ff9c9c}
-    .memory-manage-btn{position:absolute;right:8px;top:8px;z-index:3}
+    .manage-top-btn{margin-left:8px;border:1px solid rgba(203,184,145,.45);background:rgba(20,19,16,.88);color:#e5d7b8;border-radius:999px;padding:9px 15px;font:inherit;font-size:13px;cursor:pointer}
+    .manage-menu-wrap{position:relative;display:flex;justify-content:flex-end;padding:7px 10px 10px;z-index:5}
+    .manage-menu-trigger{width:34px;height:34px;border:1px solid rgba(203,184,145,.38);border-radius:50%;background:rgba(18,17,15,.94);color:#e5c276;font-size:21px;line-height:1;cursor:pointer;display:grid;place-items:center}
+    .manage-menu{position:absolute;right:10px;top:43px;min-width:150px;padding:5px;background:#171613;border:1px solid rgba(203,184,145,.42);border-radius:12px;box-shadow:0 12px 30px #000b;display:none;z-index:20}
+    .manage-menu.open{display:block}
+    .manage-menu-item{display:block;width:100%;padding:10px 12px;text-align:left;border:0;border-radius:8px;background:transparent;color:#eee5d4;font:inherit;font-size:13px;cursor:pointer}
+    .manage-menu-item:hover{background:rgba(203,184,145,.12)}
+    .manage-menu-item.danger{color:#e89a91}
     .memory{position:relative}
+    .memory .manage-menu-wrap{position:absolute;right:5px;top:5px;padding:0}
+    .memory .manage-menu{top:38px;right:0}
+    .text-memory-card{position:relative;padding-right:52px}
+    .text-memory-card .manage-menu-wrap{position:absolute;right:8px;top:8px;padding:0}
+    .text-memory-card .manage-menu{top:38px;right:0}
     .admin-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:18px}
     .admin-overlay.hidden{display:none}
     .admin-dialog{width:min(100%,430px);background:linear-gradient(145deg,#191815,#080807);border:1px solid #c8a45c;border-radius:20px;padding:24px;box-shadow:0 24px 80px #000;color:#f4efe5}
@@ -71,6 +79,44 @@
     return value;
   }
   function showError(error) { alert(error?.message || String(error)); }
+  function makeActionMenu(actions) {
+    const wrap = document.createElement("div");
+    wrap.className = "manage-menu-wrap";
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "manage-menu-trigger";
+    trigger.textContent = "⋮";
+    trigger.setAttribute("aria-label", "More actions");
+    trigger.setAttribute("aria-expanded", "false");
+    const menu = document.createElement("div");
+    menu.className = "manage-menu";
+    actions.forEach(item => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "manage-menu-item" + (item.danger ? " danger" : "");
+      button.textContent = item.label;
+      button.onclick = async event => {
+        event.stopPropagation();
+        menu.classList.remove("open");
+        trigger.setAttribute("aria-expanded", "false");
+        await item.run(event);
+      };
+      menu.append(button);
+    });
+    trigger.onclick = event => {
+      event.stopPropagation();
+      const opening = !menu.classList.contains("open");
+      document.querySelectorAll(".manage-menu.open").forEach(el => el.classList.remove("open"));
+      menu.classList.toggle("open", opening);
+      trigger.setAttribute("aria-expanded", String(opening));
+    };
+    wrap.append(trigger, menu);
+    return wrap;
+  }
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".manage-menu.open").forEach(el => el.classList.remove("open"));
+  });
+
 
   async function setupOrChangeMaster() {
     try {
@@ -143,24 +189,23 @@
     for (const item of data) {
       const card = document.createElement("article"); card.className = "text-memory-card";
       const p = document.createElement("p"); p.textContent = item.content;
-      const actions = document.createElement("div"); actions.className = "text-memory-actions";
-      const edit = document.createElement("button"); edit.className = "manage-action"; edit.textContent = "Edit";
-      edit.onclick = async () => {
-        const content = prompt("Edit your memory:", item.content);
-        if (content === null || !content.trim()) return;
-        const pass = await askVerifiedPassword(); if (!pass) return;
-        try { await adminCall("updateText", { id: item.id, content }, pass); await loadTextMemories(); }
-        catch (e) { showError(e); }
-      };
-      const del = document.createElement("button"); del.className = "manage-action danger"; del.textContent = "Delete";
-      del.onclick = async () => {
-        if (!confirm("Delete this text memory?")) return;
-        const pass = await askVerifiedPassword(); if (!pass) return;
-        if (!confirm("Final confirmation: permanently delete this memory?")) return;
-        try { await adminCall("deleteText", { id: item.id }, pass); await loadTextMemories(); }
-        catch (e) { showError(e); }
-      };
-      actions.append(edit, del); card.append(p, actions); list.append(card);
+      const actions = makeActionMenu([
+        { label: "Edit memory", run: async () => {
+          const content = prompt("Edit your memory:", item.content);
+          if (content === null || !content.trim()) return;
+          const pass = await askVerifiedPassword(); if (!pass) return;
+          try { await adminCall("updateText", { id: item.id, content }, pass); await loadTextMemories(); }
+          catch (e) { showError(e); }
+        }},
+        { label: "Delete memory", danger: true, run: async () => {
+          if (!confirm("Delete this text memory?")) return;
+          const pass = await askVerifiedPassword(); if (!pass) return;
+          if (!confirm("Final confirmation: permanently delete this memory?")) return;
+          try { await adminCall("deleteText", { id: item.id }, pass); await loadTextMemories(); }
+          catch (e) { showError(e); }
+        }}
+      ]);
+      card.append(p, actions); list.append(card);
     }
   }
 
@@ -177,28 +222,25 @@
     originalRenderAlbums();
     document.querySelectorAll("#albums .album").forEach((card, index) => {
       const album = albums[index]; if (!album) return;
-      const actions = document.createElement("div"); actions.className = "manage-actions";
-      const edit = document.createElement("button"); edit.className = "manage-action"; edit.textContent = "✎ Edit";
-      edit.onclick = async (event) => {
-        event.stopPropagation();
-        const pass = await askVerifiedPassword(); if (!pass) return;
-        const title = prompt("Album name:", album.title); if (title === null || !title.trim()) return;
-        const description = prompt("Album description:", album.description || ""); if (description === null) return;
-        try {
-          await adminCall("updateAlbum", { date: album.date, title, description }, pass);
-          await loadAlbums();
-        } catch (e) { showError(e); }
-      };
-      const del = document.createElement("button"); del.className = "manage-action danger"; del.textContent = "Delete";
-      del.onclick = async (event) => {
-        event.stopPropagation();
-        if (!confirm("Delete this entire album and all its photos/videos?")) return;
-        const pass = await askVerifiedPassword(); if (!pass) return;
-        if (!confirm("Final confirmation: permanently delete this album and its media?")) return;
-        try { await adminCall("deleteAlbum", { date: album.date }, pass); await loadAlbums(); }
-        catch (e) { showError(e); }
-      };
-      actions.append(edit, del); card.append(actions);
+      const actions = makeActionMenu([
+        { label: "Edit album", run: async (event) => {
+          event.stopPropagation();
+          const pass = await askVerifiedPassword(); if (!pass) return;
+          const title = prompt("Album name:", album.title); if (title === null || !title.trim()) return;
+          const description = prompt("Album description:", album.description || ""); if (description === null) return;
+          try { await adminCall("updateAlbum", { date: album.date, title, description }, pass); await loadAlbums(); }
+          catch (e) { showError(e); }
+        }},
+        { label: "Delete album", danger: true, run: async (event) => {
+          event.stopPropagation();
+          if (!confirm("Delete this entire album and all its photos/videos?")) return;
+          const pass = await askVerifiedPassword(); if (!pass) return;
+          if (!confirm("Final confirmation: permanently delete this album and its media?")) return;
+          try { await adminCall("deleteAlbum", { date: album.date }, pass); await loadAlbums(); }
+          catch (e) { showError(e); }
+        }}
+      ]);
+      card.append(actions);
     });
   };
 
@@ -207,18 +249,19 @@
     originalRenderFiles();
     document.querySelectorAll("#gallery .memory").forEach((card, index) => {
       const file = currentFiles[index]; if (!file) return;
-      const del = document.createElement("button"); del.className = "manage-action danger memory-manage-btn"; del.textContent = "Delete";
-      del.onclick = async (event) => {
-        event.stopPropagation();
-        if (!confirm("Delete this photo/video permanently?")) return;
-        const pass = await askVerifiedPassword(); if (!pass) return;
-        if (!confirm("Final confirmation: permanently delete this media file?")) return;
-        try {
-          await adminCall("deleteMedia", { path: file.path }, pass);
-          currentFiles.splice(index, 1); renderFiles(); await loadAlbums();
-        } catch (e) { showError(e); }
-      };
-      card.append(del);
+      const actions = makeActionMenu([
+        { label: "Delete photo/video", danger: true, run: async (event) => {
+          event.stopPropagation();
+          if (!confirm("Delete this photo/video permanently?")) return;
+          const pass = await askVerifiedPassword(); if (!pass) return;
+          if (!confirm("Final confirmation: permanently delete this media file?")) return;
+          try {
+            await adminCall("deleteMedia", { path: file.path }, pass);
+            currentFiles.splice(index, 1); renderFiles(); await loadAlbums();
+          } catch (e) { showError(e); }
+        }}
+      ]);
+      card.append(actions);
     });
   };
 
