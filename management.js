@@ -58,7 +58,7 @@
   }
 
   async function adminCall(action, payload = {}, masterPassword = "") {
-    const { data, error } = await db.functions.invoke("memory-admin", {
+    const { data, error } = await db.functions.invoke("bright-processor", {
       body: { action, ...payload, masterPassword }
     });
     if (error) throw new Error(error.message || "Management request failed.");
@@ -74,7 +74,7 @@
 
   async function setupOrChangeMaster() {
     try {
-      const { data, error } = await db.functions.invoke("memory-admin", { body: { action: "status" } });
+      const { data, error } = await db.functions.invoke("bright-processor", { body: { action: "status" } });
       if (error) throw error;
       if (!data?.hasMasterPassword) {
         const next = await passwordDialog("Create Master Password", "Choose a unique password with at least 10 characters. It is separate from your Supabase login.", "Create");
